@@ -210,7 +210,7 @@ public final class StubCursor<Element>: BidirectionCursorType {
             : currentPosition.hasItemsBefore
 
         guard hasNextItems else {
-            completion(.failure(.exhausted))
+            completion(.failure(.exhaustedError))
             return
         }
 

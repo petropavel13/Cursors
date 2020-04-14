@@ -25,7 +25,7 @@ public final class SimpleStubCursor<Element>: CursorType {
 
     public func loadNextPage(completion: ResultCompletion) {
         guard !exhausted else {
-            completion(.failure(.exhausted))
+            completion(.failure(.exhaustedError))
             return
         }
 

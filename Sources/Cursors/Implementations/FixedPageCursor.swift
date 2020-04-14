@@ -24,7 +24,7 @@ public final class FixedPageCursor<Cursor: CursorType>: CursorType {
             lastResult.elements.removeFirst(numberOfItemsToDeliver)
 
             guard !newItems.isEmpty else {
-                return .failure(.exhausted)
+                return .failure(.exhaustedError)
             }
 
             return .success((elements: newItems, exhausted: lastResult.exhausted))
