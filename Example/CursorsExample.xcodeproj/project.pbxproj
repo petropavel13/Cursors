@@ -1,0 +1,466 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		78254C562445C3DB0078F915 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78254C552445C3DB0078F915 /* AppDelegate.swift */; };
+		78254C5A2445C3DB0078F915 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78254C592445C3DB0078F915 /* FeedViewController.swift */; };
+		78254C5F2445C3DE0078F915 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78254C5E2445C3DE0078F915 /* Assets.xcassets */; };
+		787D1A3C2446F807009E4651 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787D1A3B2446F807009E4651 /* TabBarViewController.swift */; };
+		787D1A3F2446FCB0009E4651 /* FilteredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787D1A3E2446FCB0009E4651 /* FilteredViewController.swift */; };
+		788A8EC92445FFF40078F6D5 /* Parchment in Frameworks */ = {isa = PBXBuildFile; productRef = 788A8EC82445FFF40078F6D5 /* Parchment */; };
+		788A8ECF24460D540078F6D5 /* FeedItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788A8ECE24460D540078F6D5 /* FeedItemCell.swift */; };
+		788A8ED124460E360078F6D5 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788A8ED024460E360078F6D5 /* Models.swift */; };
+		788A8ED624462E430078F6D5 /* Cursors in Frameworks */ = {isa = PBXBuildFile; productRef = 788A8ED524462E430078F6D5 /* Cursors */; };
+		788A8ED9244645FD0078F6D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 788A8ED8244645FD0078F6D5 /* LaunchScreen.storyboard */; };
+		789FA7A1244746D0001923AC /* SimpleStubCursor+Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789FA7A0244746D0001923AC /* SimpleStubCursor+Feed.swift */; };
+		789FA7A324474705001923AC /* MockFeedCursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789FA7A224474705001923AC /* MockFeedCursor.swift */; };
+		C7361B16DC364913BAABEEC7 /* libPods-CursorsExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D3F8CC5C7940AF7625E4CF /* libPods-CursorsExample.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		36D3F8CC5C7940AF7625E4CF /* libPods-CursorsExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CursorsExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B4F8642E3E64FC2D989B3C9 /* Pods-CursorsExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CursorsExample.release.xcconfig"; path = "Target Support Files/Pods-CursorsExample/Pods-CursorsExample.release.xcconfig"; sourceTree = "<group>"; };
+		78254C522445C3DB0078F915 /* CursorsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CursorsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		78254C552445C3DB0078F915 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		78254C592445C3DB0078F915 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FeedViewController.swift; path = ../FeedViewController.swift; sourceTree = "<group>"; };
+		78254C5E2445C3DE0078F915 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		78254C632445C3DE0078F915 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		787D1A3B2446F807009E4651 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		787D1A3E2446FCB0009E4651 /* FilteredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredViewController.swift; sourceTree = "<group>"; };
+		788A8ECA24460A280078F6D5 /* CursorsExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CursorsExample-Bridging-Header.h"; sourceTree = "<group>"; };
+		788A8ECE24460D540078F6D5 /* FeedItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemCell.swift; sourceTree = "<group>"; };
+		788A8ED024460E360078F6D5 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		788A8ED8244645FD0078F6D5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		789FA7A0244746D0001923AC /* SimpleStubCursor+Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SimpleStubCursor+Feed.swift"; sourceTree = "<group>"; };
+		789FA7A224474705001923AC /* MockFeedCursor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockFeedCursor.swift; sourceTree = "<group>"; };
+		FF7787AF45FFD132D16102C8 /* Pods-CursorsExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CursorsExample.debug.xcconfig"; path = "Target Support Files/Pods-CursorsExample/Pods-CursorsExample.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		78254C4F2445C3DB0078F915 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				788A8ED624462E430078F6D5 /* Cursors in Frameworks */,
+				788A8EC92445FFF40078F6D5 /* Parchment in Frameworks */,
+				C7361B16DC364913BAABEEC7 /* libPods-CursorsExample.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		78254C492445C3DB0078F915 = {
+			isa = PBXGroup;
+			children = (
+				78254C542445C3DB0078F915 /* CursorsExample */,
+				78254C532445C3DB0078F915 /* Products */,
+				FA49BB9DF63FE9A32B7EB8C2 /* Pods */,
+				CB8CBB8A5769351A168E7D48 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		78254C532445C3DB0078F915 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				78254C522445C3DB0078F915 /* CursorsExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		78254C542445C3DB0078F915 /* CursorsExample */ = {
+			isa = PBXGroup;
+			children = (
+				789FA7A424474715001923AC /* Cells */,
+				787D1A3D2446F811009E4651 /* Controllers */,
+				789FA79F2447469F001923AC /* Data */,
+				788A8ECA24460A280078F6D5 /* CursorsExample-Bridging-Header.h */,
+				78254C632445C3DE0078F915 /* Info.plist */,
+				788A8ED8244645FD0078F6D5 /* LaunchScreen.storyboard */,
+				78254C552445C3DB0078F915 /* AppDelegate.swift */,
+				78254C5E2445C3DE0078F915 /* Assets.xcassets */,
+			);
+			path = CursorsExample;
+			sourceTree = "<group>";
+		};
+		787D1A3D2446F811009E4651 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				78254C592445C3DB0078F915 /* FeedViewController.swift */,
+				787D1A3B2446F807009E4651 /* TabBarViewController.swift */,
+				787D1A3E2446FCB0009E4651 /* FilteredViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		789FA79F2447469F001923AC /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				789FA7A224474705001923AC /* MockFeedCursor.swift */,
+				788A8ED024460E360078F6D5 /* Models.swift */,
+				789FA7A0244746D0001923AC /* SimpleStubCursor+Feed.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		789FA7A424474715001923AC /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				788A8ECE24460D540078F6D5 /* FeedItemCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		CB8CBB8A5769351A168E7D48 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				36D3F8CC5C7940AF7625E4CF /* libPods-CursorsExample.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FA49BB9DF63FE9A32B7EB8C2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FF7787AF45FFD132D16102C8 /* Pods-CursorsExample.debug.xcconfig */,
+				6B4F8642E3E64FC2D989B3C9 /* Pods-CursorsExample.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		78254C512445C3DB0078F915 /* CursorsExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 78254C662445C3DE0078F915 /* Build configuration list for PBXNativeTarget "CursorsExample" */;
+			buildPhases = (
+				06333385EC31C308CCCCCDED /* [CP] Check Pods Manifest.lock */,
+				78254C4E2445C3DB0078F915 /* Sources */,
+				78254C4F2445C3DB0078F915 /* Frameworks */,
+				78254C502445C3DB0078F915 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CursorsExample;
+			packageProductDependencies = (
+				788A8EC82445FFF40078F6D5 /* Parchment */,
+				788A8ED524462E430078F6D5 /* Cursors */,
+			);
+			productName = CursorsExample;
+			productReference = 78254C522445C3DB0078F915 /* CursorsExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		78254C4A2445C3DB0078F915 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1140;
+				LastUpgradeCheck = 1140;
+				ORGANIZATIONNAME = "Touch Instinct";
+				TargetAttributes = {
+					78254C512445C3DB0078F915 = {
+						CreatedOnToolsVersion = 11.4;
+						LastSwiftMigration = 1140;
+					};
+				};
+			};
+			buildConfigurationList = 78254C4D2445C3DB0078F915 /* Build configuration list for PBXProject "CursorsExample" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 78254C492445C3DB0078F915;
+			packageReferences = (
+				788A8EC72445FFF40078F6D5 /* XCRemoteSwiftPackageReference "Parchment" */,
+				788A8ED424462E430078F6D5 /* XCRemoteSwiftPackageReference "Cursors" */,
+			);
+			productRefGroup = 78254C532445C3DB0078F915 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				78254C512445C3DB0078F915 /* CursorsExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		78254C502445C3DB0078F915 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				788A8ED9244645FD0078F6D5 /* LaunchScreen.storyboard in Resources */,
+				78254C5F2445C3DE0078F915 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		06333385EC31C308CCCCCDED /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CursorsExample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		78254C4E2445C3DB0078F915 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				788A8ECF24460D540078F6D5 /* FeedItemCell.swift in Sources */,
+				78254C5A2445C3DB0078F915 /* FeedViewController.swift in Sources */,
+				787D1A3F2446FCB0009E4651 /* FilteredViewController.swift in Sources */,
+				789FA7A324474705001923AC /* MockFeedCursor.swift in Sources */,
+				789FA7A1244746D0001923AC /* SimpleStubCursor+Feed.swift in Sources */,
+				78254C562445C3DB0078F915 /* AppDelegate.swift in Sources */,
+				787D1A3C2446F807009E4651 /* TabBarViewController.swift in Sources */,
+				788A8ED124460E360078F6D5 /* Models.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		78254C642445C3DE0078F915 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		78254C652445C3DE0078F915 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		78254C672445C3DE0078F915 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FF7787AF45FFD132D16102C8 /* Pods-CursorsExample.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = CursorsExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ru.touchin.CursorsExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CursorsExample/CursorsExample-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		78254C682445C3DE0078F915 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B4F8642E3E64FC2D989B3C9 /* Pods-CursorsExample.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = CursorsExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ru.touchin.CursorsExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CursorsExample/CursorsExample-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		78254C4D2445C3DB0078F915 /* Build configuration list for PBXProject "CursorsExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				78254C642445C3DE0078F915 /* Debug */,
+				78254C652445C3DE0078F915 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		78254C662445C3DE0078F915 /* Build configuration list for PBXNativeTarget "CursorsExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				78254C672445C3DE0078F915 /* Debug */,
+				78254C682445C3DE0078F915 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		788A8EC72445FFF40078F6D5 /* XCRemoteSwiftPackageReference "Parchment" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rechsteiner/Parchment";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
+		788A8ED424462E430078F6D5 /* XCRemoteSwiftPackageReference "Cursors" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/petropavel13/Cursors";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		788A8EC82445FFF40078F6D5 /* Parchment */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 788A8EC72445FFF40078F6D5 /* XCRemoteSwiftPackageReference "Parchment" */;
+			productName = Parchment;
+		};
+		788A8ED524462E430078F6D5 /* Cursors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 788A8ED424462E430078F6D5 /* XCRemoteSwiftPackageReference "Cursors" */;
+			productName = Cursors;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 78254C4A2445C3DB0078F915 /* Project object */;
+}
