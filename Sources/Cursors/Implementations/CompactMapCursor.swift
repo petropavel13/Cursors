@@ -73,7 +73,7 @@ extension CompactMapCursor: BidirectionalCursorType where Cursor: BidirectionalC
 // MARK: - Operators
 
 public extension CursorType {
-    func flatMap<T>(transformClosure: @escaping CompactMapCursor<Self, T>.TransformClosure) -> CompactMapCursor<Self, T> {
+    func compactMap<T>(transformClosure: @escaping CompactMapCursor<Self, T>.TransformClosure) -> CompactMapCursor<Self, T> {
         return CompactMapCursor(cursor: self, transformClosure: transformClosure)
     }
 

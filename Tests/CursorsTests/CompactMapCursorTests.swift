@@ -8,7 +8,7 @@ final class CompactMapCursorTests: XCTestCase {
         let transformClosure: (Int) -> String = { String($0) }
 
         let flatMapCursor = SimpleStubCursor(pages: pages)
-            .flatMap(transformClosure: transformClosure)
+            .compactMap(transformClosure: transformClosure)
 
         let expectedPages = pages.map { $0.compactMap(transformClosure) }
 
