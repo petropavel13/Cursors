@@ -40,7 +40,7 @@ public final class StubCursor<Element>: BidirectionalCursorType {
             precondition(pages.indices.contains(pageOffset),
                          "pageOffset = \(pageOffset) is out of pages range \(pages.indices)!")
             precondition(pages[pageOffset].indices.contains(elementOffset),
-                         "elementOffset = \(elementOffset) is out of pages[pageOffset] range \(pages[pageOffset].indices)!")
+                         "elementOffset = \(elementOffset) is out of pages[\(pageOffset)] range \(pages[pageOffset].indices)!")
 
             let startIndexOnPage = pages.prefix(upTo: pageOffset)
                 .reduce(0) { $0 + $1.count }
@@ -56,7 +56,7 @@ public final class StubCursor<Element>: BidirectionalCursorType {
                       endIndex: endIndex)
         }
 
-        func move(to newIndex: Stride) -> Self {
+        private func move(to newIndex: Stride) -> Self {
             var currentIndex = 0
 
             var pageOffset = 0
@@ -88,7 +88,7 @@ public final class StubCursor<Element>: BidirectionalCursorType {
                         endIndex: endIndex)
         }
 
-        func move(by pagesCount: Pages.Index.Stride) -> Position {
+        public func offset(pages pagesCount: Pages.Index.Stride) -> Position {
             let newPageOffset = pageOffset.advanced(by: pagesCount)
 
             precondition(pages.indices.contains(newPageOffset),
@@ -97,6 +97,10 @@ public final class StubCursor<Element>: BidirectionalCursorType {
             return Position(pages: pages,
                             pageOffset: newPageOffset,
                             elementOffset: pages[newPageOffset].startIndex)
+        }
+
+        public func offset(elements elementsCount: Pages.Element.Index.Stride) -> Position {
+            return move(to: index.advanced(by: elementsCount))
         }
 
         var hasItemsBefore: Bool {
@@ -250,7 +254,7 @@ extension StubCursor: SeekableType {
 
 extension StubCursor: SkipableType {
     public func skip(pages: Int) {
-        currentPosition = currentPosition.move(by: pages)
+        currentPosition = currentPosition.offset(pages: pages)
     }
 }
 
