@@ -1,7 +1,7 @@
 import Parchment
 import Cursors
 
-typealias FeedCursor = CursorType & ClonableType & ResettableType
+typealias FeedCursor = CursorType & CloneableType & ResettableType
 
 final class FilteredViewController<Cursor: FeedCursor>: PagingViewController, PagingViewControllerDataSource where Cursor.Element == Content {
 

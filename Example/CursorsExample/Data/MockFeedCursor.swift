@@ -64,7 +64,7 @@ extension MockFeedCursor: ResettableType {
     }
 }
 
-extension MockFeedCursor: ClonableType {
+extension MockFeedCursor: CloneableType {
     public convenience init(keepingStateOf other: MockFeedCursor) {
         self.init(currentPage: other.currentPage)
     }
