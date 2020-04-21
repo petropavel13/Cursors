@@ -62,7 +62,7 @@ extension CompactMapCursor: SkipableType where Cursor: SkipableType {
     }
 }
 
-extension CompactMapCursor: BidirectionCursorType where Cursor: BidirectionCursorType {
+extension CompactMapCursor: BidirectionalCursorType where Cursor: BidirectionalCursorType {
     public func loadPreviousPage(completion: @escaping ResultCompletion) {
         return cursor.loadPreviousPage {
             self.handle(result: $0, completion: completion)

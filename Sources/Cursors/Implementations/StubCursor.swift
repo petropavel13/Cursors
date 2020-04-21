@@ -1,4 +1,4 @@
-public final class StubCursor<Element>: BidirectionCursorType {
+public final class StubCursor<Element>: BidirectionalCursorType {
     public typealias Pages = [[Element]]
 
     public typealias Element = Element

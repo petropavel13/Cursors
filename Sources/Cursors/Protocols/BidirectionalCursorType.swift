@@ -1,3 +1,3 @@
-public protocol BidirectionCursorType: CursorType {
+public protocol BidirectionalCursorType: CursorType {
     func loadPreviousPage(completion: @escaping ResultCompletion)
 }
