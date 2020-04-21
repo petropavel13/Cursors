@@ -236,7 +236,7 @@ extension StubCursor: ResettableType {
     }
 }
 
-extension StubCursor: ClonableType {
+extension StubCursor: CloneableType {
     public convenience init(keepingStateOf other: StubCursor<Element>) {
         self.init(pages: other.pages, position: other.currentPosition)
     }

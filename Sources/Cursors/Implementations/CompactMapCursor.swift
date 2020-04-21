@@ -38,7 +38,7 @@ extension CompactMapCursor: ResettableType where Cursor: ResettableType {
     }
 }
 
-extension CompactMapCursor: ClonableType where Cursor: ClonableType {
+extension CompactMapCursor: CloneableType where Cursor: CloneableType {
     public convenience init(keepingStateOf other: CompactMapCursor<Cursor, Element>) {
         self.init(cursor: other.cursor.clone(), transformClosure: other.transformClosure)
     }

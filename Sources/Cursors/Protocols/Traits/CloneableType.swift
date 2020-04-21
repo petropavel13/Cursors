@@ -1,8 +1,8 @@
-public protocol ClonableType {
+public protocol CloneableType {
     init(keepingStateOf other: Self)
 }
 
-public extension ClonableType {
+public extension CloneableType {
     func clone() -> Self {
         return Self(keepingStateOf: self)
     }

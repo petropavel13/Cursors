@@ -2,7 +2,7 @@ public final class FixedPageCursor<Cursor: CursorType>: CursorType {
     public typealias Element = Cursor.Element
     public typealias Failure = Cursor.Failure
 
-    private final class Buffer: ClonableType {
+    private final class Buffer: CloneableType {
         private var lastResult: Cursor.SuccessResult
 
         init(lastResult: Cursor.SuccessResult = (elements: [], exhausted: false)) {

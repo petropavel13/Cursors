@@ -50,7 +50,7 @@ extension SimpleStubCursor: SkipableType {
     }
 }
 
-extension SimpleStubCursor: ClonableType {
+extension SimpleStubCursor: CloneableType {
     public convenience init(keepingStateOf other: SimpleStubCursor<Element>) {
         self.init(pages: other.pages, currentPageIndex: other.currentPageIndex)
     }
