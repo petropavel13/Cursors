@@ -19,7 +19,7 @@ final class TabBarViewController: UITabBarController {
 
         let items = [
             UITabBarItem(title: "Common", image: #imageLiteral(resourceName: "ic_feed"), selectedImage: nil),
-            UITabBarItem(title: "Filtered", image: #imageLiteral(resourceName: "ic_bookmark"), selectedImage: nil)
+            UITabBarItem(title: "Paged", image: #imageLiteral(resourceName: "ic_bookmark"), selectedImage: nil)
         ]
 
         viewControllers = controllers

@@ -1,17 +1,17 @@
-public enum ContentType: String, Codable, CaseIterable {
+enum ContentType: String, Codable, CaseIterable {
     case audio
     case video
     case image
 }
 
-public struct Content: Codable {
-    public let id: Int64
-    public let title: String
-    public let type: ContentType
+struct Content: Codable {
+    let id: Int64
+    let title: String
+    let type: ContentType
 }
 
-public struct PaginatedFeed: Codable {
-    public let totalCount: Int
-    public let totalPages: Int
-    public let feed: [Content]
+struct PaginatedFeed: Codable {
+    let totalCount: Int
+    let totalPages: Int
+    let feed: [Content]
 }
