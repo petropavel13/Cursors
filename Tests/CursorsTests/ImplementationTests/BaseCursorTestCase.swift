@@ -1,16 +1,18 @@
 import XCTest
 import Cursors
 
-class BaseCursorTestCase<Cursor: CursorType>: XCTestCase where Cursor.Element == Int {
+class BaseCursorTestCase<Cursor: CursorType>: XCTestCase where Cursor.Element: Equatable {
 
-    let defaultTestPages = [[1,2,3], [4,5]]
+    var defaultTestPages: [[Cursor.Element]] {
+        fatalError("Override defaultTestPages in subclass!")
+    }
 
-    func createDefaultTestCursor() -> Cursor {
+    func createDefaultTestCursor(pages: [[Cursor.Element]]) -> Cursor {
         fatalError("Override \(String(describing: createDefaultTestCursor)) in subclass!")
     }
 
     func testOneDirectionDrain() {
-        let cursor = createDefaultTestCursor()
+        let cursor = createDefaultTestCursor(pages: defaultTestPages)
 
         wait(for: cursor.testPagesEqual(to: defaultTestPages), timeout: 10)
     }
@@ -18,8 +20,24 @@ class BaseCursorTestCase<Cursor: CursorType>: XCTestCase where Cursor.Element ==
 
 extension BaseCursorTestCase where Cursor: ResettableType {
     func testResettableType() {
-        let expectation = createDefaultTestCursor().testForwardResultsAreEqualAfterReset()
+        let nonEmptyCursorExpectation = createDefaultTestCursor(pages: defaultTestPages)
+            .testForwardResultsAreEqualAfterReset()
 
-        wait(for: [expectation], timeout: 10)
+        let emptyCursorExpectation = createDefaultTestCursor(pages: [])
+            .testForwardResultsAreEqualAfterReset()
+
+        wait(for: [nonEmptyCursorExpectation, emptyCursorExpectation], timeout: 10)
+    }
+}
+
+extension BaseCursorTestCase where Cursor: CloneableType {
+    func testClonableType() {
+        let nonEmptyCursorExpectation = createDefaultTestCursor(pages: defaultTestPages)
+            .testForwardResultsAreEqualToClone()
+
+        let emptyCursorExpectation = createDefaultTestCursor(pages: [])
+            .testForwardResultsAreEqualToClone()
+
+        wait(for: [nonEmptyCursorExpectation, emptyCursorExpectation], timeout: 10)
     }
 }

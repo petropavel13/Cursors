@@ -37,10 +37,12 @@ public final class StubCursor<Element>: BidirectionalCursorType {
              pageOffset: Pages.Index,
              elementOffset: Pages.Element.Index) {
 
-            precondition(pages.indices.contains(pageOffset),
-                         "pageOffset = \(pageOffset) is out of pages range \(pages.indices)!")
-            precondition(pages[pageOffset].indices.contains(elementOffset),
-                         "elementOffset = \(elementOffset) is out of pages[\(pageOffset)] range \(pages[pageOffset].indices)!")
+            if !pages.isEmpty {
+                precondition(pages.indices.contains(pageOffset),
+                             "pageOffset = \(pageOffset) is out of pages range \(pages.indices)!")
+                precondition(pages[pageOffset].indices.contains(elementOffset),
+                             "elementOffset = \(elementOffset) is out of pages[\(pageOffset)] range \(pages[pageOffset].indices)!")
+            }
 
             let startIndexOnPage = pages.prefix(upTo: pageOffset)
                 .reduce(0) { $0 + $1.count }
@@ -203,6 +205,11 @@ public final class StubCursor<Element>: BidirectionalCursorType {
     }
 
     private func load(direction: LoadDirection, completion: ResultCompletion) {
+        guard !pages.isEmpty else {
+            completion(.failure(.exhaustedError))
+            return
+        }
+
         let pageAssignment: Position.BoundaryPageAssignment = direction == .forward ? .right : .left
 
         if currentPosition.isBoundaryPosition && currentPosition.canMovePosition(to: pageAssignment) {
