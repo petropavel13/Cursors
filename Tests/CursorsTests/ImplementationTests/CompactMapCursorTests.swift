@@ -26,7 +26,9 @@ final class CompactMapCursorTests: BaseCursorTestCase<CompactMapCursor<SimpleStu
 
         let expectedPages = defaultOriginalPages.map { $0.filter(filterClosure) }
 
-        wait(for: compactMapCursor.testPagesEqual(to: expectedPages), timeout: 10)
+        let expectation = compactMapCursor.forwardResultEqual(to: DrainResult(pages: expectedPages, error: nil))
+
+        wait(for: [expectation], timeout: 10)
     }
 
     // Stupid code to force Xcode execute parent tests

@@ -14,17 +14,19 @@ class BaseCursorTestCase<Cursor: CursorType>: XCTestCase where Cursor.Element: E
     func testOneDirectionDrain() {
         let cursor = createDefaultTestCursor(pages: defaultTestPages)
 
-        wait(for: cursor.testPagesEqual(to: defaultTestPages), timeout: 10)
+        let expectation = cursor.forwardResultEqual(to: DrainResult(pages: defaultTestPages, error: nil))
+
+        wait(for: [expectation], timeout: 10)
     }
 }
 
 extension BaseCursorTestCase where Cursor: ResettableType {
     func testResettableType() {
         let nonEmptyCursorExpectation = createDefaultTestCursor(pages: defaultTestPages)
-            .testForwardResultsAreEqualAfterReset()
+            .forwardResultsAreEqualAfterReset()
 
         let emptyCursorExpectation = createDefaultTestCursor(pages: [])
-            .testForwardResultsAreEqualAfterReset()
+            .forwardResultsAreEqualAfterReset()
 
         wait(for: [nonEmptyCursorExpectation, emptyCursorExpectation], timeout: 10)
     }
@@ -33,10 +35,10 @@ extension BaseCursorTestCase where Cursor: ResettableType {
 extension BaseCursorTestCase where Cursor: CloneableType {
     func testClonableType() {
         let nonEmptyCursorExpectation = createDefaultTestCursor(pages: defaultTestPages)
-            .testForwardResultsAreEqualToClone()
+            .forwardResultsAreEqualToClone()
 
         let emptyCursorExpectation = createDefaultTestCursor(pages: [])
-            .testForwardResultsAreEqualToClone()
+            .forwardResultsAreEqualToClone()
 
         wait(for: [nonEmptyCursorExpectation, emptyCursorExpectation], timeout: 10)
     }
