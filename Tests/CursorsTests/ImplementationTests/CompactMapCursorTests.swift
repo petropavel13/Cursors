@@ -42,7 +42,7 @@ final class CompactMapCursorTests: BaseCursorTestCase<CompactMapCursor<SimpleStu
     }
 
     static var allTests = [
-        ("testOneDirectionDrain", testOneDirectionDrain),
+        ("testOneDirectionDrain", testOneDirectionDrainForward),
         ("testOneDirectionFilterDrain", testOneDirectionFilterDrain),
         ("testResettableType", testResettableType),
         ("testClonableType", testClonableType),

@@ -22,7 +22,7 @@ final class SimpleStubCursorTests: BaseCursorTestCase<SimpleStubCursor<Int>> {
     }
 
     static var allTests = [
-        ("testOneDirectionDrain", testOneDirectionDrain),
+        ("testOneDirectionDrain", testOneDirectionDrainForward),
         ("testResettableType", testResettableType),
         ("testClonableType", testClonableType),
     ]

@@ -21,8 +21,13 @@ final class StubCursorTests: BaseCursorTestCase<StubCursor<Int>> {
         super.testClonableType()
     }
 
+    func testOneDirectionDrainBackward() {
+        super.testOneDirectionDrainBackward()
+    }
+
     static var allTests = [
-        ("testOneDirectionDrain", testOneDirectionDrain),
+        ("testOneDirectionDrain", testOneDirectionDrainForward),
+        ("testOneDirectionDrainBackward", testOneDirectionDrainBackward),
         ("testResettableType", testResettableType),
         ("testClonableType", testClonableType),
     ]
