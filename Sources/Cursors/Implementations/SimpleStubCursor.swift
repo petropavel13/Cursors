@@ -44,12 +44,6 @@ extension SimpleStubCursor: ResettableType {
     }
 }
 
-extension SimpleStubCursor: SkipableType {
-    public func skip(pages: Int) {
-        currentPageIndex += pages
-    }
-}
-
 extension SimpleStubCursor: CloneableType {
     public convenience init(keepingStateOf other: SimpleStubCursor<Element>) {
         self.init(pages: other.pages, currentPageIndex: other.currentPageIndex)

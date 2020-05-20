@@ -5,7 +5,7 @@ extension CloneableType where Self: CursorType, Element: Equatable {
     func forwardResultsAreEqualToClone() -> XCTestExpectation {
         let cursorType = type(of: self)
 
-        let expectation = XCTestExpectation(description: "\(cursorType) \(String(describing: forwardResultsAreEqualToClone)) expectation")
+        let expectation = XCTestExpectation(description: "\(cursorType) \(#function) expectation")
 
         let copy = clone()
 

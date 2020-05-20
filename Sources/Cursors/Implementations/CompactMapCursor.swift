@@ -44,11 +44,11 @@ extension CompactMapCursor: CloneableType where Cursor: CloneableType {
     }
 }
 
-extension CompactMapCursor: SeekableType where Cursor: SeekableType {
+extension CompactMapCursor: PositionableType where Cursor: PositionableType {
     public typealias Position = Cursor.Position
 
-    public var initialPosition: Position {
-        return cursor.initialPosition
+    public var currentPosition: Position {
+        return cursor.currentPosition
     }
 
     public func seek(to position: Position) {
@@ -56,9 +56,13 @@ extension CompactMapCursor: SeekableType where Cursor: SeekableType {
     }
 }
 
-extension CompactMapCursor: SkipableType where Cursor: SkipableType {
-    public func skip(pages: Int) {
-        cursor.skip(pages: pages)
+extension CompactMapCursor: BidirectionalPositionableType where Cursor: BidirectionalPositionableType {
+    public var movingForwardCurrentPosition: Position {
+        return cursor.movingForwardCurrentPosition
+    }
+
+    public var movingBackwardCurrentPosition: Position {
+        return cursor.movingBackwardCurrentPosition
     }
 }
 
