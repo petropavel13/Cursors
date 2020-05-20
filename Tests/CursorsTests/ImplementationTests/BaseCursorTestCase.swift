@@ -48,7 +48,7 @@ extension BaseCursorTestCase where Cursor: BidirectionalCursorType {
 }
 
 extension BaseCursorTestCase where Cursor: ResettableType {
-    func testResettableType() {
+    func testResettableTrait() {
         let nonEmptyCursorExpectation = createDefaultTestCursor(pages: defaultTestPages)
             .forwardResultsAreEqualAfterReset()
 
@@ -60,7 +60,7 @@ extension BaseCursorTestCase where Cursor: ResettableType {
 }
 
 extension BaseCursorTestCase where Cursor: CloneableType {
-    func testClonableType() {
+    func testClonableTrait() {
         let nonEmptyCursorExpectation = createDefaultTestCursor(pages: defaultTestPages)
             .forwardResultsAreEqualToClone()
 

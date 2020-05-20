@@ -13,17 +13,17 @@ final class SimpleStubCursorTests: BaseCursorTestCase<SimpleStubCursor<Int>> {
 
     // Stupid code to force Xcode execute parent tests
 
-    func testResettableType() {
-        super.testResettableType()
+    func testResettableTrait() {
+        super.testResettableTrait()
     }
 
-    func testClonableType() {
-        super.testClonableType()
+    func testClonableTrait() {
+        super.testClonableTrait()
     }
 
     static var allTests = [
         ("testOneDirectionDrain", testOneDirectionDrainForward),
-        ("testResettableType", testResettableType),
-        ("testClonableType", testClonableType),
+        ("testResettableTrait", testResettableTrait),
+        ("testClonableTrait", testClonableTrait),
     ]
 }

@@ -33,18 +33,18 @@ final class CompactMapCursorTests: BaseCursorTestCase<CompactMapCursor<SimpleStu
 
     // Stupid code to force Xcode execute parent tests
 
-    func testResettableType() {
-        super.testResettableType()
+    func testResettableTrait() {
+        super.testResettableTrait()
     }
 
-    func testClonableType() {
-        super.testClonableType()
+    func testClonableTrait() {
+        super.testClonableTrait()
     }
 
     static var allTests = [
         ("testOneDirectionDrain", testOneDirectionDrainForward),
         ("testOneDirectionFilterDrain", testOneDirectionFilterDrain),
-        ("testResettableType", testResettableType),
-        ("testClonableType", testClonableType),
+        ("testResettableTrait", testResettableTrait),
+        ("testClonableTrait", testClonableTrait),
     ]
 }
