@@ -1,5 +1,5 @@
 import XCTest
-import Cursors
+@testable import Cursors
 
 final class StubCursorTests: BaseCursorTestCase<StubCursor<Int>> {
 
@@ -14,25 +14,27 @@ final class StubCursorTests: BaseCursorTestCase<StubCursor<Int>> {
     // Stupid code to force Xcode execute parent tests
 
     func testResettableTrait() {
-        super.testResettableTrait()
+        super.baseTestResettableTrait()
     }
 
     func testClonableTrait() {
-        super.testClonableTrait()
+        super.baseTestClonableTrait()
     }
 
     func testOneDirectionDrainBackward() {
-        super.testOneDirectionDrainBackward()
+        super.baseTestOneDirectionDrainBackward()
     }
 
     func testPositionableTrait() {
         let positionableCursor = createDefaultTestCursor(pages: defaultTestPages)
 
-        let initialPosition = positionableCursor.currentPosition
+        let initialPosition = StubCursor.Position(pages: defaultTestPages,
+                                                  pageIndex: 0,
+                                                  elementIndex: 0)
 
         // Drain forward from middle position of first page
 
-        let firstPageMiddlePosition = initialPosition.offset(elements: 2)
+        let firstPageMiddlePosition = initialPosition.offset(elements: 2)!
 
         let expectedForwardResult = DrainResult<StubCursor<Int>>(pages: [[3],[4,5]], error: nil)
 
@@ -52,7 +54,7 @@ final class StubCursorTests: BaseCursorTestCase<StubCursor<Int>> {
 
         // Drain forward from boundary position between pages
 
-        let drainBoundaryPosition = initialPosition.offset(elements: 3)
+        let drainBoundaryPosition = initialPosition.offset(elements: 3)!
 
         let expectedForwardBoundaryResult = DrainResult<StubCursor<Int>>(pages: [[4,5]], error: nil)
 
@@ -77,7 +79,7 @@ final class StubCursorTests: BaseCursorTestCase<StubCursor<Int>> {
     }
 
     static var allTests = [
-        ("testOneDirectionDrain", testOneDirectionDrainForward),
+        ("testOneDirectionDrainForward", testOneDirectionDrainForward),
         ("testOneDirectionDrainBackward", testOneDirectionDrainBackward),
         ("testResettableTrait", testResettableTrait),
         ("testClonableTrait", testClonableTrait),

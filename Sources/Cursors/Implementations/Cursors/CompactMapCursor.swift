@@ -2,8 +2,8 @@ public final class CompactMapCursor<Cursor: CursorType, Element>: CursorType {
     public typealias Element = Element
     public typealias Failure = Cursor.Failure
 
-    fileprivate let cursor: Cursor
-    fileprivate let transformClosure: TransformClosure
+    private let cursor: Cursor
+    private let transformClosure: TransformClosure
 
     public typealias TransformClosure = (Cursor.Element) -> Element?
 
@@ -32,6 +32,14 @@ public final class CompactMapCursor<Cursor: CursorType, Element>: CursorType {
 
 // MARK: - Conditional conformances
 
+extension CompactMapCursor: BidirectionalCursorType where Cursor: BidirectionalCursorType {
+    public func loadPreviousPage(completion: @escaping ResultCompletion) {
+        return cursor.loadPreviousPage {
+            self.handle(result: $0, completion: completion)
+        }
+    }
+}
+
 extension CompactMapCursor: ResettableType where Cursor: ResettableType {
     public convenience init(withInitialStateFrom other: CompactMapCursor<Cursor, Element>) {
         self.init(cursor: other.cursor.reset(), transformClosure: other.transformClosure)
@@ -47,8 +55,8 @@ extension CompactMapCursor: CloneableType where Cursor: CloneableType {
 extension CompactMapCursor: PositionableType where Cursor: PositionableType {
     public typealias Position = Cursor.Position
 
-    public var currentPosition: Position {
-        return cursor.currentPosition
+    public var movingForwardCurrentPosition: Position {
+        return cursor.movingForwardCurrentPosition
     }
 
     public func seek(to position: Position) {
@@ -66,11 +74,13 @@ extension CompactMapCursor: BidirectionalPositionableType where Cursor: Bidirect
     }
 }
 
-extension CompactMapCursor: BidirectionalCursorType where Cursor: BidirectionalCursorType {
-    public func loadPreviousPage(completion: @escaping ResultCompletion) {
-        return cursor.loadPreviousPage {
-            self.handle(result: $0, completion: completion)
-        }
+extension CompactMapCursor: PageStrideableType where Cursor: PageStrideableType {
+    public func position(after page: Position.Page) -> Position? {
+        return cursor.position(after: page)
+    }
+
+    public func position(before page: Position.Page) -> Position? {
+        return cursor.position(before: page)
     }
 }
 

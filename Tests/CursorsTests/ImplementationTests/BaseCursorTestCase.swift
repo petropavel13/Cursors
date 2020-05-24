@@ -21,10 +21,10 @@ class BaseCursorTestCase<Cursor: CursorType>: XCTestCase where Cursor.Element: E
 }
 
 extension BaseCursorTestCase where Cursor: BidirectionalCursorType {
-    func testOneDirectionDrainBackward() {
+    func baseTestOneDirectionDrainBackward() {
         let cursor = createDefaultTestCursor(pages: defaultTestPages)
 
-        let expectation = XCTestExpectation(description: "\(type(of: self)) \(String(describing: testOneDirectionDrainBackward)) expectation")
+        let expectation = XCTestExpectation(description: "\(type(of: self)) \(#function) expectation")
 
         let expectedForwardResult = DrainResult<Cursor>(pages: defaultTestPages, error: nil)
         let expectedBackwardResult = DrainResult<Cursor>(pages: defaultTestPages.reversed(), error: nil)
@@ -48,7 +48,7 @@ extension BaseCursorTestCase where Cursor: BidirectionalCursorType {
 }
 
 extension BaseCursorTestCase where Cursor: ResettableType {
-    func testResettableTrait() {
+    func baseTestResettableTrait() {
         let nonEmptyCursorExpectation = createDefaultTestCursor(pages: defaultTestPages)
             .forwardResultsAreEqualAfterReset()
 
@@ -60,7 +60,7 @@ extension BaseCursorTestCase where Cursor: ResettableType {
 }
 
 extension BaseCursorTestCase where Cursor: CloneableType {
-    func testClonableTrait() {
+    func baseTestClonableTrait() {
         let nonEmptyCursorExpectation = createDefaultTestCursor(pages: defaultTestPages)
             .forwardResultsAreEqualToClone()
 

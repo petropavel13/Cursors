@@ -1,0 +1,97 @@
+public final class CursorObserver<Cursor, EventHandler: CursorObserverEventHandler>: CursorType where EventHandler.Cursor == Cursor {
+
+    public typealias Element = Cursor.Element
+    public typealias Failure = Cursor.Failure
+
+    private let cursor: Cursor
+    let eventHandler: EventHandler
+
+    public init(cursor: Cursor, eventHander: EventHandler) {
+        self.cursor = cursor
+        self.eventHandler = eventHander
+    }
+
+    public func loadNextPage(completion: @escaping ResultCompletion) {
+        load(direction: .forward,
+             nextPageClosure: { cursor.loadNextPage(completion: $0) },
+             completion: completion)
+    }
+
+    private func load(direction: LoadDirection,
+                      nextPageClosure: (@escaping Cursor.ResultCompletion) -> Void,
+                      completion: @escaping ResultCompletion) {
+
+        eventHandler.onLoadStart(direction: direction)
+
+        nextPageClosure {
+            switch $0 {
+            case let .success(successResult):
+                self.eventHandler.onResult(successResult: successResult, direction: direction)
+            case let .failure(failure):
+                self.eventHandler.onError(failure: failure, direction: direction)
+            }
+
+            self.eventHandler.onFinish(direction: direction)
+
+            completion($0)
+        }
+    }
+}
+
+// MARK: - Conditional conformances
+
+extension CursorObserver: BidirectionalCursorType where Cursor: BidirectionalCursorType {
+    public func loadPreviousPage(completion: @escaping ResultCompletion) {
+        load(direction: .backward,
+             nextPageClosure: { cursor.loadPreviousPage(completion: $0) },
+             completion: completion)
+    }
+}
+
+extension CursorObserver: CloneableType where Cursor: CloneableType {
+    convenience public init(keepingStateOf other: CursorObserver<Cursor, EventHandler>) {
+        self.init(cursor: other.cursor.clone(), eventHander: other.eventHandler.clone())
+    }
+}
+
+extension CursorObserver: ResettableType where Cursor: ResettableType {
+    convenience public init(withInitialStateFrom other: CursorObserver<Cursor, EventHandler>) {
+        self.init(cursor: other.cursor.reset(), eventHander: other.eventHandler.reset())
+    }
+}
+
+extension CursorObserver: PositionableType where Cursor: PositionableType {
+    public typealias Position = Cursor.Position
+
+    public var movingForwardCurrentPosition: Position {
+        return cursor.movingForwardCurrentPosition
+    }
+
+    public func seek(to position: Position) {
+        cursor.seek(to: position)
+    }
+}
+
+extension CursorObserver: PageStrideableType where Cursor: PageStrideableType {
+    public func position(after page: Position.Page) -> Position? {
+        return cursor.position(after: page)
+    }
+
+    public func position(before page: Position.Page) -> Position? {
+        return cursor.position(before: page)
+    }
+}
+
+extension CursorObserver: BidirectionalPositionableType where Cursor: BidirectionalPositionableType {
+    public var movingBackwardCurrentPosition: Position {
+        return cursor.movingBackwardCurrentPosition
+    }
+}
+
+// MARK: - Operators
+
+public extension CursorType {
+    func print() -> CursorObserver<Self, LogEventHandler<Self>> {
+        return CursorObserver(cursor: self, eventHander: LogEventHandler { debugPrint($0) })
+    }
+}

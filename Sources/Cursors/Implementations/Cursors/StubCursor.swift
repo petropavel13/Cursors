@@ -90,19 +90,26 @@ public final class StubCursor<Element>: BidirectionalCursorType {
                         endIndex: endIndex)
         }
 
-        public func offset(pages pagesCount: Pages.Index.Stride) -> Position {
-            let newpageIndex = pageIndex.advanced(by: pagesCount)
+        public func offset(pages pagesCount: Pages.Index.Stride) -> Position? {
+            let newPageIndex = pageIndex.advanced(by: pagesCount)
 
-            precondition(pages.indices.contains(newpageIndex),
-                         "Can't move position by \(pagesCount). \(newpageIndex) is out of range")
+            guard pages.indices.contains(newPageIndex) else {
+                return nil
+            }
 
             return Position(pages: pages,
-                            pageIndex: newpageIndex,
-                            elementIndex: pages[newpageIndex].startIndex)
+                            pageIndex: newPageIndex,
+                            elementIndex: pages[newPageIndex].startIndex)
         }
 
-        public func offset(elements elementsCount: Pages.Element.Index.Stride) -> Position {
-            return move(to: index.advanced(by: elementsCount))
+        public func offset(elements elementsCount: Pages.Element.Index.Stride) -> Position? {
+            let newIndex = index.advanced(by: elementsCount)
+
+            guard (index...endIndex).contains(newIndex) else {
+                return nil
+            }
+
+            return move(to: newIndex)
         }
 
         var hasItemsBefore: Bool {
@@ -122,6 +129,10 @@ public final class StubCursor<Element>: BidirectionalCursorType {
         }
 
         var isBoundaryPosition: Bool {
+            guard !pages.isEmpty else {
+                return false
+            }
+
             let page = pages[pageIndex]
             let isFirstBatch = pages.startIndex == pageIndex
             let isLastBatch = pages.index(before: pages.endIndex) == pageIndex
@@ -167,8 +178,8 @@ public final class StubCursor<Element>: BidirectionalCursorType {
         }
     }
 
-    fileprivate let pages: Pages
-    public private(set) var currentPosition: Position
+    private let pages: Pages
+    private var currentPosition: Position
 
     private init(pages: Pages,
                  position: Position) {
@@ -235,7 +246,7 @@ public final class StubCursor<Element>: BidirectionalCursorType {
 
 // MARK: - Conformances
 
-extension StubCursor: BidirectionalPositionableType {
+extension StubCursor: PositionableType {
     public func seek(to newPosition: Position) {
         currentPosition = newPosition
     }
@@ -247,13 +258,25 @@ extension StubCursor: BidirectionalPositionableType {
 
         return currentPosition.movePosition(to: .right)
     }
+}
 
+extension StubCursor: BidirectionalPositionableType {
     public var movingBackwardCurrentPosition: Position {
         guard currentPosition.isBoundaryPosition && currentPosition.canMovePosition(to: .left) else {
             return currentPosition
         }
 
         return currentPosition.movePosition(to: .left)
+    }
+}
+
+extension StubCursor: PageStrideableType {
+    public func position(after page: Position.Page) -> Position? {
+        return currentPosition.offset(pages: 1)
+    }
+
+    public func position(before page: Position.Page) -> Position? {
+        return currentPosition.offset(pages: -1)
     }
 }
 

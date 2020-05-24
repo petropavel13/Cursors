@@ -1,7 +1,7 @@
 public protocol PositionableType {
     associatedtype Position
 
-    var currentPosition: Position { get }
+    var movingForwardCurrentPosition: Position { get }
 
     func seek(to position: Position)
 }
