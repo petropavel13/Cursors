@@ -59,22 +59,32 @@ That's it. So simple.
 
 Each cursor can support some traits, available actions will depend on implemented traits. Everything is type safe, with compile-time checks.
 
-### SkipableType
-
-Skip `n` pages. Affects what next page will be loaded when you call `loadNextPage` or `loadPreviousPage`.
-
-```swift
-func skip(pages: Int)
-```
-
-### SeekableType
+### PositionableType
 
 Move to arbitrary position in data source. Affects what next page will be loaded when you call `loadNextPage` or `loadPreviousPage`.
 
 ```swift
-var initialPosition: Position { get }
+var movingForwardCurrentPosition: Position { get }
 
 func seek(to position: Position)
+```
+
+### BidirectionalPositionableType
+
+Inherit `PositionableType`, but take into account boundary positions when direction is important.
+
+```swift
+var movingBackwardCurrentPosition: Position { get }
+```
+
+
+### PageStrideableType
+
+When `Position` type implements `PageIndexableType` position can be calculated relative to given page.
+
+```swift
+func position(after page: Position.Page) -> Position?
+func position(before page: Position.Page) -> Position?
 ```
 
 ### ResettableType
@@ -282,5 +292,4 @@ CursorsExample project contains simple example of pagination.
 ## Will be implemented later
 
 - [ ] FixedPageCursor traits: `BidirectionalCursorType`, `SkipableType`, `SeekableType`, `ClonableType`
-- [ ] CacheCursor
 - [ ] ThreadSafeCursor
