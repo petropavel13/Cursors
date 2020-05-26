@@ -18,7 +18,7 @@ public final class CursorObserver<Cursor, EventHandler: CursorObserverEventHandl
     }
 
     private func load(direction: LoadDirection,
-                      nextPageClosure: (@escaping Cursor.ResultCompletion) -> Void,
+                      nextPageClosure: (@escaping ResultCompletion) -> Void,
                       completion: @escaping ResultCompletion) {
 
         eventHandler.onLoadStart(direction: direction)
@@ -48,18 +48,6 @@ extension CursorObserver: BidirectionalCursorType where Cursor: BidirectionalCur
     }
 }
 
-extension CursorObserver: CloneableType where Cursor: CloneableType {
-    convenience public init(keepingStateOf other: CursorObserver<Cursor, EventHandler>) {
-        self.init(cursor: other.cursor.clone(), eventHander: other.eventHandler.clone())
-    }
-}
-
-extension CursorObserver: ResettableType where Cursor: ResettableType {
-    convenience public init(withInitialStateFrom other: CursorObserver<Cursor, EventHandler>) {
-        self.init(cursor: other.cursor.reset(), eventHander: other.eventHandler.reset())
-    }
-}
-
 extension CursorObserver: PositionableType where Cursor: PositionableType {
     public typealias Position = Cursor.Position
 
@@ -72,7 +60,13 @@ extension CursorObserver: PositionableType where Cursor: PositionableType {
     }
 }
 
-extension CursorObserver: PageStrideableType where Cursor: PageStrideableType {
+extension CursorObserver: BidirectionalPositionableType where Cursor: BidirectionalPositionableType {
+    public var movingBackwardCurrentPosition: Position {
+        return cursor.movingBackwardCurrentPosition
+    }
+}
+
+extension CursorObserver: PagePositionableType where Cursor: PagePositionableType {
     public func position(after page: Position.Page) -> Position? {
         return cursor.position(after: page)
     }
@@ -82,9 +76,21 @@ extension CursorObserver: PageStrideableType where Cursor: PageStrideableType {
     }
 }
 
-extension CursorObserver: BidirectionalPositionableType where Cursor: BidirectionalPositionableType {
-    public var movingBackwardCurrentPosition: Position {
-        return cursor.movingBackwardCurrentPosition
+extension CursorObserver: ElementStrideableType where Cursor: ElementStrideableType {
+    public func position(advancedBy stride: Position.Element.Stride) -> Position? {
+        return cursor.position(advancedBy: stride)
+    }
+}
+
+extension CursorObserver: CloneableType where Cursor: CloneableType {
+    convenience public init(keepingStateOf other: CursorObserver<Cursor, EventHandler>) {
+        self.init(cursor: other.cursor.clone(), eventHander: other.eventHandler.clone())
+    }
+}
+
+extension CursorObserver: ResettableType where Cursor: ResettableType {
+    convenience public init(withInitialStateFrom other: CursorObserver<Cursor, EventHandler>) {
+        self.init(cursor: other.cursor.reset(), eventHander: other.eventHandler.reset())
     }
 }
 

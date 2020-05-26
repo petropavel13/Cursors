@@ -1,14 +1,18 @@
 import XCTest
 @testable import Cursors
 
-final class StubCursorTests: BaseCursorTestCase<StubCursor<Int>> {
+final class FixedPageCursorTests: BaseCursorTestCase<FixedPageCursor<StubCursor<Int>>> {
 
-    override var defaultTestPages: [[Int]] {
-        return [[1,2,3],[4,5]]
+    override var defaultTestPages: Pages {
+        return [[1,2,3,4],[5],[6]]
     }
 
-    override func createDefaultTestCursor(pages: [[Int]]) -> StubCursor<Int> {
-        return StubCursor(pages: pages)
+    override var expectedForwardResults: Pages {
+        return [[1,2],[3,4],[5,6]]
+    }
+
+    override func createDefaultTestCursor(pages: [[Int]]) -> FixedPageCursor<StubCursor<Int>> {
+        return StubCursor(pages: pages).paged(by: 2)
     }
 
     // Stupid code to force Xcode execute parent tests
@@ -33,6 +37,22 @@ final class StubCursorTests: BaseCursorTestCase<StubCursor<Int>> {
         super.baseTestPositionableTraitBackwardDrain()
     }
 
+    func testBufferForwardDrain() {
+        let countableCursor = StubCursor(pages: defaultTestPages).countRequests()
+        let pagedCursor = countableCursor.paged(by: 2)
+
+        let testPagesCount = defaultTestPages.count
+
+        let expectation = XCTestExpectation(description: "\(#function) expectation")
+
+        pagedCursor.drainForward { _ in
+            XCTAssertEqual(countableCursor.eventHandler.onLoadForwardCount, testPagesCount)
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 10.0)
+    }
+
     static var allTests = [
         ("testOneDirectionDrainForward", testOneDirectionDrainForward),
         ("testOneDirectionDrainBackward", testOneDirectionDrainBackward),
@@ -40,5 +60,6 @@ final class StubCursorTests: BaseCursorTestCase<StubCursor<Int>> {
         ("testClonableTrait", testClonableTrait),
         ("testPositionableTraitForwardDrain", testPositionableTraitForwardDrain),
         ("testPositionableTraitBackwardDrain", testPositionableTraitBackwardDrain),
+        ("testBufferForwardDrain", testBufferForwardDrain),
     ]
 }

@@ -1,4 +1,4 @@
-public final class CacheCursor<Cursor: CursorType & PageStrideableType, CacheStorage: CacheStorageType>: CursorType
+public final class CacheCursor<Cursor: CursorType & PagePositionableType, CacheStorage: CacheStorageType>: CursorType
     where CacheStorage.Page == Cursor.Position.Page, CacheStorage.PageContent == Cursor.SuccessResult {
 
     public typealias Element = Cursor.Element
@@ -63,6 +63,16 @@ public final class CacheCursor<Cursor: CursorType & PageStrideableType, CacheSto
 
 // MARK: - Conditional conformances
 
+extension CacheCursor: BidirectionalCursorType where Cursor: BidirectionalCursorType & BidirectionalPositionableType {
+    public func loadPreviousPage(completion: @escaping ResultCompletion) {
+        load(page: cursor.movingBackwardCurrentPosition.pageIndex,
+             direction: .backward,
+             newCursorPositionGenerator: cursor.position(before:),
+             nextPageClosure: { self.cursor.loadPreviousPage(completion: $0) },
+             completion: completion)
+    }
+}
+
 extension CacheCursor: PositionableType where Cursor: PositionableType {
     public typealias Position = Cursor.Position
 
@@ -81,13 +91,19 @@ extension CacheCursor: BidirectionalPositionableType where Cursor: Bidirectional
     }
 }
 
-extension CacheCursor: BidirectionalCursorType where Cursor: BidirectionalCursorType & BidirectionalPositionableType {
-    public func loadPreviousPage(completion: @escaping ResultCompletion) {
-        load(page: cursor.movingBackwardCurrentPosition.pageIndex,
-             direction: .backward,
-             newCursorPositionGenerator: cursor.position(before:),
-             nextPageClosure: { self.cursor.loadPreviousPage(completion: $0) },
-             completion: completion)
+extension CacheCursor: PagePositionableType where Cursor: PagePositionableType {
+    public func position(after page: Position.Page) -> Position? {
+        return cursor.position(after: page)
+    }
+
+    public func position(before page: Position.Page) -> Position? {
+        return cursor.position(before: page)
+    }
+}
+
+extension CacheCursor: ElementStrideableType where Cursor: ElementStrideableType {
+    public func position(advancedBy stride: Position.Element.Stride) -> Position? {
+        return cursor.position(advancedBy: stride)
     }
 }
 
@@ -115,13 +131,13 @@ public extension CacheCursor where Cursor: CloneableType {
     }
 }
 
-public extension CursorType where Self: PageStrideableType {
+public extension CursorType where Self: PagePositionableType {
     func cached<CS: CacheStorageType>(in cacheStorage: CS) -> CacheCursor<Self, CS> {
         return CacheCursor(cursor: self, storage: cacheStorage)
     }
 }
 
-public extension CursorType where Self: PageStrideableType, Position.Page: Hashable {
+public extension CursorType where Self: PagePositionableType, Position.Page: Hashable {
     func cached() -> CacheCursor<Self, InMemoryCacheStorage<Position.Page, SuccessResult>> {
         return cached(in: InMemoryCacheStorageType())
     }
@@ -131,6 +147,6 @@ public extension CursorType where Self: PositionableType, Position: PageIndexabl
     typealias InMemoryCacheStorageType = InMemoryCacheStorage<Position.Page, SuccessResult>
 }
 
-public extension CursorType where Self: PageStrideableType, Position.Page: Hashable {
+public extension CursorType where Self: PagePositionableType, Position.Page: Hashable {
     typealias InMemoryCacheCursorType = CacheCursor<Self, Self.InMemoryCacheStorageType>
 }

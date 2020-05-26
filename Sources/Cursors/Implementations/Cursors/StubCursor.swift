@@ -10,7 +10,7 @@ public final class StubCursor<Element>: BidirectionalCursorType {
             case right
         }
 
-        public typealias Stride = Pages.Element.Index
+        public typealias Stride = Pages.Element.Index.Stride
 
         private let pages: Pages
 
@@ -270,13 +270,19 @@ extension StubCursor: BidirectionalPositionableType {
     }
 }
 
-extension StubCursor: PageStrideableType {
+extension StubCursor: PagePositionableType {
     public func position(after page: Position.Page) -> Position? {
         return currentPosition.offset(pages: 1)
     }
 
     public func position(before page: Position.Page) -> Position? {
         return currentPosition.offset(pages: -1)
+    }
+}
+
+extension StubCursor: ElementStrideableType {
+    public func position(advancedBy stride: Position.Element.Stride) -> Position? {
+        return currentPosition.offset(elements: stride)
     }
 }
 

@@ -13,19 +13,19 @@ public final class CompactMapCursor<Cursor: CursorType, Element>: CursorType {
     }
 
     public func loadNextPage(completion: @escaping ResultCompletion) {
-        return cursor.loadNextPage {
-            self.handle(result: $0, completion: completion)
-        }
+        load(nextPageClosure: cursor.loadNextPage, completion: completion)
     }
 
-    private func handle(result: Result<Cursor.SuccessResult, Cursor.Failure>, completion: ResultCompletion) {
-        switch result {
-        case let .success(result):
-            let transformedNewItems = result.elements.compactMap(self.transformClosure)
+    private func load(nextPageClosure: (@escaping Cursor.ResultCompletion) -> Void, completion: @escaping ResultCompletion) {
+        nextPageClosure {
+            switch $0 {
+            case let .success(result):
+                let transformedNewItems = result.elements.compactMap(self.transformClosure)
 
-            completion(.success((elements: transformedNewItems, exhausted: result.exhausted)))
-        case let .failure(failure):
-            completion(.failure(failure))
+                completion(.success((elements: transformedNewItems, exhausted: result.exhausted)))
+            case let .failure(failure):
+                completion(.failure(failure))
+            }
         }
     }
 }
@@ -34,21 +34,7 @@ public final class CompactMapCursor<Cursor: CursorType, Element>: CursorType {
 
 extension CompactMapCursor: BidirectionalCursorType where Cursor: BidirectionalCursorType {
     public func loadPreviousPage(completion: @escaping ResultCompletion) {
-        return cursor.loadPreviousPage {
-            self.handle(result: $0, completion: completion)
-        }
-    }
-}
-
-extension CompactMapCursor: ResettableType where Cursor: ResettableType {
-    public convenience init(withInitialStateFrom other: CompactMapCursor<Cursor, Element>) {
-        self.init(cursor: other.cursor.reset(), transformClosure: other.transformClosure)
-    }
-}
-
-extension CompactMapCursor: CloneableType where Cursor: CloneableType {
-    public convenience init(keepingStateOf other: CompactMapCursor<Cursor, Element>) {
-        self.init(cursor: other.cursor.clone(), transformClosure: other.transformClosure)
+        load(nextPageClosure: cursor.loadPreviousPage, completion: completion)
     }
 }
 
@@ -74,13 +60,31 @@ extension CompactMapCursor: BidirectionalPositionableType where Cursor: Bidirect
     }
 }
 
-extension CompactMapCursor: PageStrideableType where Cursor: PageStrideableType {
+extension CompactMapCursor: PagePositionableType where Cursor: PagePositionableType {
     public func position(after page: Position.Page) -> Position? {
         return cursor.position(after: page)
     }
 
     public func position(before page: Position.Page) -> Position? {
         return cursor.position(before: page)
+    }
+}
+
+extension CompactMapCursor: ElementStrideableType where Cursor: ElementStrideableType {
+    public func position(advancedBy stride: Position.Element.Stride) -> Position? {
+        return cursor.position(advancedBy: stride)
+    }
+}
+
+extension CompactMapCursor: ResettableType where Cursor: ResettableType {
+    public convenience init(withInitialStateFrom other: CompactMapCursor<Cursor, Element>) {
+        self.init(cursor: other.cursor.reset(), transformClosure: other.transformClosure)
+    }
+}
+
+extension CompactMapCursor: CloneableType where Cursor: CloneableType {
+    public convenience init(keepingStateOf other: CompactMapCursor<Cursor, Element>) {
+        self.init(cursor: other.cursor.clone(), transformClosure: other.transformClosure)
     }
 }
 

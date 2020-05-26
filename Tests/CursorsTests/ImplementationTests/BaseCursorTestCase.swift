@@ -3,18 +3,25 @@ import Cursors
 
 class BaseCursorTestCase<Cursor: CursorType>: XCTestCase where Cursor.Element: Equatable {
 
-    var defaultTestPages: [[Cursor.Element]] {
-        fatalError("Override defaultTestPages in subclass!")
+    typealias DrainResultType = DrainResult<Cursor>
+    typealias Pages = [[Cursor.Element]]
+
+    var defaultTestPages: Pages {
+        fatalError("Override \(#function) in subclass!")
     }
 
-    func createDefaultTestCursor(pages: [[Cursor.Element]]) -> Cursor {
-        fatalError("Override \(String(describing: createDefaultTestCursor)) in subclass!")
+    var expectedForwardResults: Pages {
+        return defaultTestPages
+    }
+
+    func createDefaultTestCursor(pages: Pages) -> Cursor {
+        fatalError("Override \(#function) in subclass!")
     }
 
     func testOneDirectionDrainForward() {
         let cursor = createDefaultTestCursor(pages: defaultTestPages)
 
-        let expectation = cursor.forwardResultEqual(to: DrainResult(pages: defaultTestPages, error: nil))
+        let expectation = cursor.forwardResultEqual(to: DrainResult(pages: expectedForwardResults, error: nil))
 
         wait(for: [expectation], timeout: 10)
     }
@@ -26,8 +33,8 @@ extension BaseCursorTestCase where Cursor: BidirectionalCursorType {
 
         let expectation = XCTestExpectation(description: "\(type(of: self)) \(#function) expectation")
 
-        let expectedForwardResult = DrainResult<Cursor>(pages: defaultTestPages, error: nil)
-        let expectedBackwardResult = DrainResult<Cursor>(pages: defaultTestPages.reversed(), error: nil)
+        let expectedForwardResult = DrainResultType(pages: expectedForwardResults, error: nil)
+        let expectedBackwardResult = DrainResultType(pages: expectedForwardResults.reversed(), error: nil)
 
         cursor.drainForward {
             XCTAssertEqual($0, expectedForwardResult, "Got unexpected result from forward drain!")
@@ -68,5 +75,104 @@ extension BaseCursorTestCase where Cursor: CloneableType {
             .forwardResultsAreEqualToClone()
 
         wait(for: [nonEmptyCursorExpectation, emptyCursorExpectation], timeout: 10)
+    }
+}
+
+extension Array where Element: Equatable {
+    func drop(until element: Element, includingElement: Bool) -> Self {
+        guard contains(element) else {
+            return self
+        }
+
+        return Self(drop { $0 != element || ($0 == element && includingElement) })
+    }
+}
+
+extension BaseCursorTestCase where Cursor: ElementStrideableType,
+    Cursor.Position.Element.Stride == Pages.Index.Stride,
+    Cursor.Element: Equatable {
+
+    func baseTestPositionableTraitForwardDrain() {
+        let positionableCursor = createDefaultTestCursor(pages: defaultTestPages)
+
+        let firstPage = defaultTestPages[0]
+        let firstPageMiddleIndex = firstPage.count / 2
+        let firstPageMiddlePosition = positionableCursor.position(advancedBy: firstPageMiddleIndex)!
+
+        let firstPageTrailingElements = Array(firstPage.suffix(from: firstPageMiddleIndex))
+
+        let firstPageTrailingElementsFirstItem = firstPageTrailingElements[0]
+
+        let trailingPagesAfterFirstPageLeadingItems = expectedForwardResults
+            .drop { !$0.contains(firstPageTrailingElementsFirstItem) }
+            .map { $0.drop(until: firstPageTrailingElementsFirstItem, includingElement: false) }
+
+        // Drain forward from middle position of first page
+
+        let expectedForwardResult = DrainResultType(pages: trailingPagesAfterFirstPageLeadingItems, error: nil)
+
+        let drainForwardCursor = createDefaultTestCursor(pages: defaultTestPages)
+
+        let forwardExpectation = drainForwardCursor.expectResults(after: firstPageMiddlePosition,
+                                                                  equalsTo: expectedForwardResult)
+
+        // Drain forward from boundary position between pages
+
+        let drainBoundaryPosition = positionableCursor.position(advancedBy: firstPage.count)!
+
+        let firstPageLastItem = firstPage.last!
+
+        var trailingPagesAfterFirstPage = expectedForwardResults
+            .drop { !$0.contains(firstPageLastItem) }
+            .map { $0.drop(until: firstPageLastItem, includingElement: true) }
+        trailingPagesAfterFirstPage.removeAll { $0.isEmpty }
+
+        let expectedForwardBoundaryResult = DrainResultType(pages: trailingPagesAfterFirstPage, error: nil)
+
+        let boundaryDrainForwardCursor = createDefaultTestCursor(pages: defaultTestPages)
+
+        let forwardBoundaryExpectation = boundaryDrainForwardCursor.expectResults(after: drainBoundaryPosition,
+                                                                                  equalsTo: expectedForwardBoundaryResult)
+
+        wait(for: [forwardExpectation, forwardBoundaryExpectation], timeout: 10.0)
+    }
+}
+
+extension BaseCursorTestCase where Cursor: ElementStrideableType & BidirectionalCursorType,
+    Cursor.Position.Element.Stride == Pages.Index.Stride,
+    Cursor.Element: Equatable {
+
+    func baseTestPositionableTraitBackwardDrain() {
+        let drainBackwardCursor = createDefaultTestCursor(pages: defaultTestPages)
+
+        let firstPage = defaultTestPages[0]
+        let firstPageMiddleIndex = firstPage.count / 2
+        let firstPageMiddlePosition = drainBackwardCursor.position(advancedBy: firstPageMiddleIndex)!
+
+        let firstPageLeadingElements = Array(firstPage.prefix(upTo: firstPageMiddleIndex))
+
+        // Drain backward from middle position of first page
+
+        let expectedBackwardResult = DrainResultType(pages: [firstPageLeadingElements], error: nil)
+
+        let backwardExpectation = drainBackwardCursor.expectResults(before: firstPageMiddlePosition,
+                                                                    equalsTo: expectedBackwardResult)
+
+        // Drain backward from boundary position between pages
+
+        let expectedPages = expectedForwardResults.reversed()
+            .drop { !$0.contains(where: firstPage.contains) }
+            .map { $0.filter(firstPage.contains) }
+
+        let expectedBackwardBoundaryResult = DrainResultType(pages: expectedPages, error: nil)
+
+        let boundaryDrainBackwardCursor = createDefaultTestCursor(pages: defaultTestPages)
+
+        let drainBoundaryPosition = boundaryDrainBackwardCursor.position(advancedBy: firstPage.count)!
+
+        let backwardBoundaryExpectation = boundaryDrainBackwardCursor.expectResults(before: drainBoundaryPosition,
+                                                                                    equalsTo: expectedBackwardBoundaryResult)
+
+        wait(for: [backwardExpectation, backwardBoundaryExpectation], timeout: 10.0)
     }
 }
