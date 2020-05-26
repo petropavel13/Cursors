@@ -78,13 +78,21 @@ var movingBackwardCurrentPosition: Position { get }
 ```
 
 
-### PageStrideableType
+### PagePositionableType
 
 When `Position` type implements `PageIndexableType` position can be calculated relative to given page.
 
 ```swift
 func position(after page: Position.Page) -> Position?
 func position(before page: Position.Page) -> Position?
+```
+
+### ElementStrideableType
+
+When `Position` type implements `ElementIndexableType` and `Position.Element` implements `Strideable` new position can be calculated relative to given stride.
+
+```swift
+func position(advancedBy stride: Position.Element.Stride) -> Position?
 ```
 
 ### ResettableType
@@ -125,7 +133,7 @@ let position = cursor.initialPosition // pageIndex: 0, elementIndex: 0
 cursor.seek(to: position.offset(elements: 4)) // pageIndex: 1, elementIndex: 1
 ```
 
-Implements: `CursorType`, `BidirectionalCursorType`, `SkipableType`, `SeekableType`, `ResettableType`, `ClonableType`
+Implements: All traits
 
 ### CompactMapCursor
 
@@ -144,7 +152,7 @@ let cursor = SimpleStubCursor(pages: [[1,2,3], [4,5]])
 // ["1","2","3"],["4","5"]
 ```
 
-Implements: `CursorType`, `BidirectionalCursorType`, `SkipableType`, `SeekableType`, `ResettableType`, `ClonableType`
+Implements: conditionally all traits
 
 ### FixedPageCursor
 
@@ -166,7 +174,7 @@ let cursor = SimpleStubCursor(pages: [[1,2,3], [4,5]])
 // [1,2],[3,4],[5]
 ```
 
-Implements: `CursorType`, `ResettableType`
+Implements: conditionally all traits
 
 ### AnyCursor
 
@@ -291,5 +299,4 @@ CursorsExample project contains simple example of pagination.
 
 ## Will be implemented later
 
-- [ ] FixedPageCursor traits: `BidirectionalCursorType`, `SkipableType`, `SeekableType`, `ClonableType`
 - [ ] ThreadSafeCursor
