@@ -1,5 +1,5 @@
 public protocol ElementIndexableType {
-    associatedtype Element
+    associatedtype ElementIndex
 
-    var elementIndex: Element { get }
+    var elementIndex: ElementIndex { get }
 }

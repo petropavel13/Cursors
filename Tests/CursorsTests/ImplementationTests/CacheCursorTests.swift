@@ -1,13 +1,13 @@
 @testable import Cursors
 import XCTest
 
-final class CacheCursorTests: BaseCursorTestCase<StubCursor<Int>.InMemoryCacheCursorType> {
+final class CacheCursorTests: BaseCursorTestCase<StubCursor<Int>.DefaultInMemoryCacheCursorType> {
 
     override var defaultTestPages: [[Int]] {
         return [[1,2,3],[4,5]]
     }
 
-    override func createDefaultTestCursor(pages: [[Int]]) -> StubCursor<Int>.InMemoryCacheCursorType {
+    override func createDefaultTestCursor(pages: [[Int]]) -> StubCursor<Int>.DefaultInMemoryCacheCursorType {
         return StubCursor(pages: pages).cached()
     }
 

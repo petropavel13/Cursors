@@ -70,7 +70,7 @@ public final class FixedPageCursor<Cursor: CursorType>: CursorType {
                 let successResult = (elements: newElements, exhausted: result.exhausted)
                 lastResult = (successResult: successResult, direction: direction)
             } else {
-                lastResult = (direction: direction, successResult: result)
+                lastResult = (successResult: result, direction: direction)
             }
         }
 
@@ -88,6 +88,17 @@ public final class FixedPageCursor<Cursor: CursorType>: CursorType {
         self.cursor = cursor
         self.pageSize = pageSize
     }
+
+    // MARK: - CursorType
+
+    public func loadNextPage(completion: @escaping ResultCompletion) {
+        load(nextPageClosure: loadNextPage,
+             cursorNextPageClosure: cursor.loadNextPage,
+             direction: .forward,
+             completion: completion)
+    }
+
+    // MARK: - Private
 
     private func load(nextPageClosure: @escaping (@escaping ResultCompletion) -> Void,
                       cursorNextPageClosure: (@escaping ResultCompletion) -> Void,
@@ -112,13 +123,6 @@ public final class FixedPageCursor<Cursor: CursorType>: CursorType {
                 }
             }
         }
-    }
-
-    public func loadNextPage(completion: @escaping ResultCompletion) {
-        load(nextPageClosure: loadNextPage,
-             cursorNextPageClosure: cursor.loadNextPage,
-             direction: .forward,
-             completion: completion)
     }
 }
 
@@ -157,17 +161,17 @@ extension FixedPageCursor: BidirectionalPositionableType where Cursor: Bidirecti
 }
 
 extension FixedPageCursor: PagePositionableType where Cursor: PagePositionableType {
-    public func position(after page: Position.Page) -> Position? {
+    public func position(after page: Position.PageIndex) -> Position? {
         return cursor.position(after: page)
     }
 
-    public func position(before page: Position.Page) -> Position? {
+    public func position(before page: Position.PageIndex) -> Position? {
         return cursor.position(before: page)
     }
 }
 
 extension FixedPageCursor: ElementStrideableType where Cursor: ElementStrideableType {
-    public func position(advancedBy stride: Position.Element.Stride) -> Position? {
+    public func position(advancedBy stride: Position.ElementIndex.Stride) -> Position? {
         return cursor.position(advancedBy: stride)
     }
 }

@@ -89,7 +89,7 @@ extension Array where Element: Equatable {
 }
 
 extension BaseCursorTestCase where Cursor: ElementStrideableType,
-    Cursor.Position.Element.Stride == Pages.Index.Stride,
+    Cursor.Position.ElementIndex.Stride == Pages.Index.Stride,
     Cursor.Element: Equatable {
 
     func baseTestPositionableTraitForwardDrain() {
@@ -139,7 +139,7 @@ extension BaseCursorTestCase where Cursor: ElementStrideableType,
 }
 
 extension BaseCursorTestCase where Cursor: ElementStrideableType & BidirectionalCursorType,
-    Cursor.Position.Element.Stride == Pages.Index.Stride,
+    Cursor.Position.ElementIndex.Stride == Pages.Index.Stride,
     Cursor.Element: Equatable {
 
     func baseTestPositionableTraitBackwardDrain() {

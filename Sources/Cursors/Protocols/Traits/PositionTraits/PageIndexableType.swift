@@ -1,5 +1,5 @@
 public protocol PageIndexableType {
-    associatedtype Page
+    associatedtype PageIndex
 
-    var pageIndex: Page { get }
+    var pageIndex: PageIndex { get }
 }

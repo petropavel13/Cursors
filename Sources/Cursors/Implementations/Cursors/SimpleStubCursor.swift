@@ -23,6 +23,8 @@ public final class SimpleStubCursor<Element>: CursorType {
         self.init(pages: [singlePage])
     }
 
+    // MARK: - CursorType
+
     public func loadNextPage(completion: ResultCompletion) {
         guard !exhausted else {
             completion(.failure(.exhaustedError))

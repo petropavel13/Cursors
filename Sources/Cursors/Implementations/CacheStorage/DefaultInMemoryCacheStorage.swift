@@ -1,4 +1,4 @@
-public final class InMemoryCacheStorage<Page: Hashable, PageContent>: CacheStorageType {
+public final class DefaultInMemoryCacheStorage<Page: Hashable, PageContent>: CacheStorageType {
     public typealias Page = Page
     public typealias PageContent = PageContent
 
@@ -13,11 +13,11 @@ public final class InMemoryCacheStorage<Page: Hashable, PageContent>: CacheStora
         cachedPages = [:]
     }
 
-    public init(keepingStateOf other: InMemoryCacheStorage<Page, PageContent>) {
+    public init(keepingStateOf other: DefaultInMemoryCacheStorage<Page, PageContent>) {
         cachedPages = other.cachedPages
     }
 
-    public init(withInitialStateFrom other: InMemoryCacheStorage<Page, PageContent>) {
+    public init(withInitialStateFrom other: DefaultInMemoryCacheStorage<Page, PageContent>) {
         cachedPages = [:]
     }
 

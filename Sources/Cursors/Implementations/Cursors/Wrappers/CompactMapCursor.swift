@@ -12,9 +12,13 @@ public final class CompactMapCursor<Cursor: CursorType, Element>: CursorType {
         self.transformClosure = transformClosure
     }
 
+    // MARK: - CursorType
+
     public func loadNextPage(completion: @escaping ResultCompletion) {
         load(nextPageClosure: cursor.loadNextPage, completion: completion)
     }
+
+    // MARK: - Private
 
     private func load(nextPageClosure: (@escaping Cursor.ResultCompletion) -> Void, completion: @escaping ResultCompletion) {
         nextPageClosure {
@@ -61,17 +65,17 @@ extension CompactMapCursor: BidirectionalPositionableType where Cursor: Bidirect
 }
 
 extension CompactMapCursor: PagePositionableType where Cursor: PagePositionableType {
-    public func position(after page: Position.Page) -> Position? {
+    public func position(after page: Position.PageIndex) -> Position? {
         return cursor.position(after: page)
     }
 
-    public func position(before page: Position.Page) -> Position? {
+    public func position(before page: Position.PageIndex) -> Position? {
         return cursor.position(before: page)
     }
 }
 
 extension CompactMapCursor: ElementStrideableType where Cursor: ElementStrideableType {
-    public func position(advancedBy stride: Position.Element.Stride) -> Position? {
+    public func position(advancedBy stride: Position.ElementIndex.Stride) -> Position? {
         return cursor.position(advancedBy: stride)
     }
 }

@@ -11,11 +11,15 @@ public final class CursorObserver<Cursor, EventHandler: CursorObserverEventHandl
         self.eventHandler = eventHander
     }
 
+    // MARK: - CursorType
+
     public func loadNextPage(completion: @escaping ResultCompletion) {
         load(direction: .forward,
              nextPageClosure: { cursor.loadNextPage(completion: $0) },
              completion: completion)
     }
+
+    // MARK: - Private
 
     private func load(direction: LoadDirection,
                       nextPageClosure: (@escaping ResultCompletion) -> Void,
@@ -67,17 +71,17 @@ extension CursorObserver: BidirectionalPositionableType where Cursor: Bidirectio
 }
 
 extension CursorObserver: PagePositionableType where Cursor: PagePositionableType {
-    public func position(after page: Position.Page) -> Position? {
+    public func position(after page: Position.PageIndex) -> Position? {
         return cursor.position(after: page)
     }
 
-    public func position(before page: Position.Page) -> Position? {
+    public func position(before page: Position.PageIndex) -> Position? {
         return cursor.position(before: page)
     }
 }
 
 extension CursorObserver: ElementStrideableType where Cursor: ElementStrideableType {
-    public func position(advancedBy stride: Position.Element.Stride) -> Position? {
+    public func position(advancedBy stride: Position.ElementIndex.Stride) -> Position? {
         return cursor.position(advancedBy: stride)
     }
 }

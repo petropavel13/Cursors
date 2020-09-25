@@ -161,20 +161,23 @@ public final class StubCursor<Element>: BidirectionalCursorType {
         }
 
         func movePosition(to boundary: BoundaryPageAssignment) -> Self {
+            let newPageIndex: Int
+            let newElementIndex: Int
+
             switch boundary {
             case .left:
-                return Self(pages: pages,
-                            pageIndex: pages.index(before: pageIndex),
-                            elementIndex: pages[pageIndex].endIndex,
-                            index: index,
-                            endIndex: endIndex)
+                newPageIndex = pages.index(before: pageIndex)
+                newElementIndex = pages[pageIndex].endIndex
             case .right:
-                return Self(pages: pages,
-                            pageIndex: pages.index(after: pageIndex),
-                            elementIndex: pages[pageIndex].startIndex,
-                            index: index,
-                            endIndex: endIndex)
+                newPageIndex = pages.index(after: pageIndex)
+                newElementIndex = pages[pageIndex].startIndex
             }
+
+            return Self(pages: pages,
+                        pageIndex: newPageIndex,
+                        elementIndex: newElementIndex,
+                        index: index,
+                        endIndex: endIndex)
         }
     }
 
@@ -203,6 +206,8 @@ public final class StubCursor<Element>: BidirectionalCursorType {
         self.init(pages: [singlePage])
     }
 
+    // MARK: - CursorType
+
     public func loadNextPage(completion: ResultCompletion) {
         load(direction: .forward, completion: completion)
     }
@@ -210,6 +215,8 @@ public final class StubCursor<Element>: BidirectionalCursorType {
     public func loadPreviousPage(completion: ResultCompletion) {
         load(direction: .backward, completion: completion)
     }
+
+    // MARK: - Private
 
     private func load(direction: LoadDirection, completion: ResultCompletion) {
         guard !pages.isEmpty else {
@@ -271,17 +278,17 @@ extension StubCursor: BidirectionalPositionableType {
 }
 
 extension StubCursor: PagePositionableType {
-    public func position(after page: Position.Page) -> Position? {
+    public func position(after page: Position.PageIndex) -> Position? {
         return currentPosition.offset(pages: 1)
     }
 
-    public func position(before page: Position.Page) -> Position? {
+    public func position(before page: Position.PageIndex) -> Position? {
         return currentPosition.offset(pages: -1)
     }
 }
 
 extension StubCursor: ElementStrideableType {
-    public func position(advancedBy stride: Position.Element.Stride) -> Position? {
+    public func position(advancedBy stride: Position.ElementIndex.Stride) -> Position? {
         return currentPosition.offset(elements: stride)
     }
 }

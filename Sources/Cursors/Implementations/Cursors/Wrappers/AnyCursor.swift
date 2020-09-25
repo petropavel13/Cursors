@@ -4,12 +4,14 @@ public class AnyCursor<Element, Failure: CursorErrorType>: CursorType {
 
     private let loadNextPageClosure: (@escaping ResultCompletion) -> Void
 
-    public func loadNextPage(completion: @escaping ResultCompletion) {
-        loadNextPageClosure(completion)
-    }
-
     public init<Cursor: CursorType>(cursor: Cursor) where Cursor.Element == Element, Cursor.Failure == Failure {
         self.loadNextPageClosure = cursor.loadNextPage
+    }
+
+    // MARK: - CursorType
+
+    public func loadNextPage(completion: @escaping ResultCompletion) {
+        loadNextPageClosure(completion)
     }
 }
 
