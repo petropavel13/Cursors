@@ -1,1 +1,1 @@
-public protocol CancelableCursorType: CursorType, CancelableType where Failure: CancelableCursorErrorType {}
+public protocol CancelableCursorType: CursorType, CancelableType {}
