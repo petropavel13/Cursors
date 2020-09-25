@@ -20,7 +20,7 @@ Any type of pagination using cursor pattern.
 Cursors is available through Swift Package Manager. Add Cursors as a dependency to your Package.swift:
 
 ```swift
-.package(url: "https://github.com/petropavel13/Cursors", from: "0.3.0")
+.package(url: "https://github.com/petropavel13/Cursors", from: "0.4.0")
 ```
 
 ## Basic types
@@ -111,6 +111,14 @@ Type with copy constructor. Keeps internal state of original instance.
 init(keepingStateOf other: Self)
 ```
 
+### CancelableType
+
+Type with cancel function. Cancels the current cursor operation.
+
+```swift
+func cancel()
+```
+
 ## Implementations
 
 ### SimpleStubCursor
@@ -133,7 +141,7 @@ let position = cursor.initialPosition // pageIndex: 0, elementIndex: 0
 cursor.seek(to: position.offset(elements: 4)) // pageIndex: 1, elementIndex: 1
 ```
 
-Implements: All traits
+Implements: All traits, except `CancelableType`
 
 ### CompactMapCursor
 
@@ -193,6 +201,24 @@ let cursor = SimpleStubCursor(pages: [[1,2,3], [4,5]])
 ```
 
 Implements: `CursorType`
+
+### AnyCancelableCursor
+
+Type-erasure cursor for any `CancelableCursorType`.
+
+```swift
+let cancelableCursor = MyCancelableCursor(...)
+
+let cursor = AnyCancelableCursor(cancelableCursor: cancelableCursor)
+
+// or just
+
+let cursor = MyCancelableCursor(...)
+            .eraseToAnyCursor()
+
+```
+
+Implements: `CancelableCursorType`
 
 ### AnyBidirectionCursor
 
