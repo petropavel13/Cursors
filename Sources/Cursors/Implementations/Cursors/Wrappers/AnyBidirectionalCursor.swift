@@ -1,4 +1,4 @@
-public final class AnyBidirectionalCursor<Element, Failure: CursorErrorType>:
+open class AnyBidirectionalCursor<Element, Failure: CursorErrorType>:
     AnyCursor<Element, Failure>, BidirectionalCursorType {
 
     private let loadPreviousPageClosure: (@escaping ResultCompletion) -> Void

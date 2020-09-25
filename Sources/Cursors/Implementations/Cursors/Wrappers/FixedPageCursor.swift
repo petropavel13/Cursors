@@ -188,6 +188,12 @@ extension FixedPageCursor: CloneableType where Cursor: CloneableType {
     }
 }
 
+extension FixedPageCursor: CancelableType where Cursor: CancelableType {
+    public func cancel() {
+        cursor.cancel()
+    }
+}
+
 // MARK: - Operators
 
 public extension CursorType {

@@ -92,6 +92,12 @@ extension CompactMapCursor: CloneableType where Cursor: CloneableType {
     }
 }
 
+extension CompactMapCursor: CancelableType where Cursor: CancelableType {
+    public func cancel() {
+        cursor.cancel()
+    }
+}
+
 // MARK: - Operators
 
 public extension CursorType {

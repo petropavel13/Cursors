@@ -1,4 +1,4 @@
-public class AnyCursor<Element, Failure: CursorErrorType>: CursorType {
+open class AnyCursor<Element, Failure: CursorErrorType>: CursorType {
     public typealias Element = Element
     public typealias Failure = Failure
 

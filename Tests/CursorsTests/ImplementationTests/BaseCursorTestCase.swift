@@ -78,6 +78,15 @@ extension BaseCursorTestCase where Cursor: CloneableType {
     }
 }
 
+extension BaseCursorTestCase where Cursor: CancelableCursorType {
+    func baseTestCancelableTrait() {
+        let cancelCursorExpectation = createDefaultTestCursor(pages: defaultTestPages)
+            .cursorRequestCancelledBeforeCompletion()
+
+        wait(for: [cancelCursorExpectation], timeout: 10)
+    }
+}
+
 extension Array where Element: Equatable {
     func drop(until element: Element, includingElement: Bool) -> Self {
         guard contains(element) else {

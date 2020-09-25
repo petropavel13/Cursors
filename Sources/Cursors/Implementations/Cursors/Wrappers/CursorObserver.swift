@@ -98,6 +98,12 @@ extension CursorObserver: ResettableType where Cursor: ResettableType {
     }
 }
 
+extension CursorObserver: CancelableType where Cursor: CancelableType {
+    public func cancel() {
+        cursor.cancel()
+    }
+}
+
 // MARK: - Operators
 
 public extension CursorType {

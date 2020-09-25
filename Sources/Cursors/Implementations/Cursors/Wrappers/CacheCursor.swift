@@ -125,6 +125,14 @@ extension CacheCursor: CloneableType where Cursor: CloneableType {
     }
 }
 
+extension CacheCursor: CancelableType where Cursor: CancelableType {
+    public func cancel() {
+        cursor.cancel()
+    }
+}
+
+// MARK: - Operators
+
 public extension CacheCursor {
     func copy() -> Self {
         return Self(cursor: cursor, storage: storage)
