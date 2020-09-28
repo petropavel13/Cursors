@@ -1,7 +1,7 @@
 public final class CacheCursor<Cursor: CursorType & PagePositionableType, CacheStorage: CacheStorageType>: CursorType
     where CacheStorage.Page == Cursor.Position.PageIndex, CacheStorage.PageContent == Cursor.SuccessResult {
 
-    public typealias Element = Cursor.Element
+    public typealias Page = Cursor.Page
     public typealias Failure = Cursor.Failure
 
     private let cursor: Cursor

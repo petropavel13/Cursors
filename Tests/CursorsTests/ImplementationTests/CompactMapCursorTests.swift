@@ -1,7 +1,7 @@
 import XCTest
 @testable import Cursors
 
-final class CompactMapCursorTests: BaseCursorTestCase<CompactMapCursor<SimpleStubCursor<Int>, String>> {
+final class CompactMapCursorTests: BaseCursorTestCase<CompactMapCursor<SimpleStubCursor<[Int]>, [String]>> {
     private let defaultOriginalPages = [[1,2,3], [4,5]]
 
     override var defaultTestPages: [[String]] {
@@ -10,12 +10,13 @@ final class CompactMapCursorTests: BaseCursorTestCase<CompactMapCursor<SimpleStu
 
     private let defaultTransformClosure: (Int) -> String = { String($0) }
 
-    private func createDefaultSimpleStubCursor(pages: [[Int]]) -> SimpleStubCursor<Int> {
+    private func createDefaultSimpleStubCursor(pages: [[Int]]) -> SimpleStubCursor<[Int]> {
         return SimpleStubCursor(pages: defaultOriginalPages)
     }
 
-    override func createDefaultTestCursor(pages: [[String]]) -> CompactMapCursor<SimpleStubCursor<Int>, String> {
-        return createDefaultSimpleStubCursor(pages: defaultOriginalPages).compactMap(transformClosure: defaultTransformClosure)
+    override func createDefaultTestCursor(pages: [[String]]) -> CompactMapCursor<SimpleStubCursor<[Int]>, [String]> {
+        return createDefaultSimpleStubCursor(pages: defaultOriginalPages).compactMap(transformClosure: defaultTransformClosure,
+                                                                                     createPageClosure: { _, pageItems in pageItems })
     }
 
     func testOneDirectionFilterDrain() {

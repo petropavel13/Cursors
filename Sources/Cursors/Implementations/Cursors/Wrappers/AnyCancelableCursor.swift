@@ -1,7 +1,7 @@
-open class AnyCancelableCursor<Element, Failure: CursorErrorType>: AnyCursor<Element, Failure>, CancelableType {
+open class AnyCancelableCursor<Page: PageType, Failure: CursorErrorType>: AnyCursor<Page, Failure>, CancelableType {
     private let cancelClosure: () -> Void
 
-    public init<Cursor: CancelableCursorType>(cancelableCursor: Cursor) where Cursor.Element == Element, Cursor.Failure == Failure {
+    public init<Cursor: CancelableCursorType>(cancelableCursor: Cursor) where Cursor.Page == Page, Cursor.Failure == Failure {
         self.cancelClosure = cancelableCursor.cancel
         super.init(cursor: cancelableCursor)
     }
@@ -16,7 +16,7 @@ open class AnyCancelableCursor<Element, Failure: CursorErrorType>: AnyCursor<Ele
 // MARK: - Operators
 
 public extension CancelableCursorType {
-    func eraseToAnyCursor() -> AnyCancelableCursor<Element, Failure> {
+    func eraseToAnyCursor() -> AnyCancelableCursor<Page, Failure> {
         return AnyCancelableCursor(cancelableCursor: self)
     }
 }

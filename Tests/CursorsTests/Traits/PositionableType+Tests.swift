@@ -1,7 +1,7 @@
 import Cursors
 import XCTest
 
-extension CursorType where Self: PositionableType, Element: Equatable {
+extension CursorType where Self: PositionableType, Page.Item: Equatable {
 
     func expectResults(after position: Position, equalsTo result: DrainResult<Self>) -> XCTestExpectation {
         return expectResults(drainedFrom: position,
@@ -28,7 +28,7 @@ extension CursorType where Self: PositionableType, Element: Equatable {
     }
 }
 
-extension BidirectionalCursorType where Self: PositionableType, Element: Equatable {
+extension BidirectionalCursorType where Self: PositionableType, Page.Item: Equatable {
     func expectResults(before position: Position, equalsTo result: DrainResult<Self>) -> XCTestExpectation {
         return expectResults(drainedFrom: position,
                              equalsTo: result,

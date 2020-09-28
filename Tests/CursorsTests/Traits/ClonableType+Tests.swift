@@ -1,7 +1,7 @@
 import Cursors
 import XCTest
 
-extension CloneableType where Self: CursorType, Element: Equatable {
+extension CloneableType where Self: CursorType, Page.Item: Equatable {
     func forwardResultsAreEqualToClone() -> XCTestExpectation {
         let cursorType = type(of: self)
 

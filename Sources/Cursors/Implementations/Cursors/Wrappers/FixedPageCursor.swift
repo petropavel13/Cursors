@@ -1,27 +1,18 @@
 public final class FixedPageCursor<Cursor: CursorType>: CursorType {
-    public typealias Element = Cursor.Element
+    public typealias Page = Cursor.Page
     public typealias Failure = Cursor.Failure
 
     private final class Buffer: CloneableType {
         typealias LastResult = (successResult: SuccessResult, direction: LoadDirection)
 
-        private static var emptyResult: LastResult {
-            return (successResult: (elements: [], exhausted: false), direction: .forward)
-        }
-
         private var lastResult: LastResult
 
-        private var elements: [Element] {
-            get {
-                return lastResult.successResult.elements
-            }
-            set {
-                lastResult.successResult.elements = newValue
-            }
+        private var elements: [Page.Item] {
+            return lastResult.successResult.page.pageItems
         }
 
-        convenience init() {
-            self.init(lastResult: Self.emptyResult)
+        private func copyPage(with items: [Page.Item]) -> Page {
+            return Page(copy: lastResult.successResult.page, pageItems: items)
         }
 
         init(lastResult: LastResult) {
@@ -37,12 +28,12 @@ public final class FixedPageCursor<Cursor: CursorType>: CursorType {
                 return false
             }
 
-            return lastResult.successResult.elements.count >= pageSize
+            return elements.count >= pageSize
         }
 
         func drain(in direction: LoadDirection, pageSize: Int = .max) -> LoadResult {
             guard lastResult.direction == direction else {
-                return .success((elements: [], exhausted: true))
+                return .success((page: copyPage(with: []), exhausted: true))
             }
 
             let numberOfItemsToDeliver = Swift.min(elements.count, pageSize)
@@ -51,38 +42,41 @@ public final class FixedPageCursor<Cursor: CursorType>: CursorType {
                 ? elements.prefix(upTo: numberOfItemsToDeliver)
                 : elements.suffix(numberOfItemsToDeliver)
 
+            var newBufferItems = elements
+
             direction == .forward
-                ? elements.removeFirst(numberOfItemsToDeliver)
-                : elements.removeLast(numberOfItemsToDeliver)
+                ? newBufferItems.removeFirst(numberOfItemsToDeliver)
+                : newBufferItems.removeLast(numberOfItemsToDeliver)
+
+            lastResult.successResult.page = copyPage(with: newBufferItems)
 
             guard !newItems.isEmpty else {
                 return .failure(.exhaustedError)
             }
 
-            return .success((elements: Array(newItems), exhausted: lastResult.successResult.exhausted && elements.isEmpty))
+            return .success((page: copyPage(with: Array(newItems)),
+                                        exhausted: lastResult.successResult.exhausted && elements.isEmpty))
         }
 
         func fill(from result: SuccessResult, direction: LoadDirection) {
             if lastResult.direction == direction {
                 let newElements = direction == .forward
-                    ? elements + result.elements
-                    : result.elements + elements
-                let successResult = (elements: newElements, exhausted: result.exhausted)
+                    ? elements + result.page.pageItems
+                    : result.page.pageItems + elements
+
+                let successResult = (page: copyPage(with: newElements), exhausted: result.exhausted)
+
                 lastResult = (successResult: successResult, direction: direction)
             } else {
                 lastResult = (successResult: result, direction: direction)
             }
-        }
-
-        func clear() {
-            lastResult = Self.emptyResult
         }
     }
 
     private let cursor: Cursor
     private let pageSize: Int
 
-    private let buffer = Buffer()
+    private var buffer: Buffer?
 
     public init(cursor: Cursor, pageSize: Int) {
         self.cursor = cursor
@@ -105,18 +99,26 @@ public final class FixedPageCursor<Cursor: CursorType>: CursorType {
                       direction: LoadDirection,
                       completion: @escaping ResultCompletion) {
 
-        if buffer.canDrain(pageSize: pageSize, in: direction) {
+        if let buffer = buffer, buffer.canDrain(pageSize: pageSize, in: direction) {
             completion(buffer.drain(in: direction, pageSize: pageSize))
         } else {
             cursorNextPageClosure {
                 switch $0 {
                 case let .success(result):
-                    self.buffer.fill(from: result, direction: direction)
+                    if let buffer = self.buffer {
+                        buffer.fill(from: result, direction: direction)
+                    } else {
+                        self.buffer = Buffer(lastResult: (successResult: result, direction: direction))
+                    }
 
                     nextPageClosure(completion)
                 case let .failure(failure):
                     if failure.isExhausted {
-                        completion(self.buffer.drain(in: direction))
+                        if let buffer = self.buffer {
+                            completion(buffer.drain(in: direction))
+                        } else {
+                            completion(.failure(failure))
+                        }
                     } else {
                         completion($0)
                     }
@@ -145,7 +147,7 @@ extension FixedPageCursor: PositionableType where Cursor: PositionableType {
     }
 
     public func seek(to position: Position) {
-        buffer.clear()
+        buffer = nil
         cursor.seek(to: position)
     }
 }

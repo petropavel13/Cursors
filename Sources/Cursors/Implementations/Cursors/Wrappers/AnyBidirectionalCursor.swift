@@ -1,5 +1,5 @@
-open class AnyBidirectionalCursor<Element, Failure: CursorErrorType>:
-    AnyCursor<Element, Failure>, BidirectionalCursorType {
+open class AnyBidirectionalCursor<Page: PageType, Failure: CursorErrorType>:
+    AnyCursor<Page, Failure>, BidirectionalCursorType {
 
     private let loadPreviousPageClosure: (@escaping ResultCompletion) -> Void
 
@@ -7,7 +7,7 @@ open class AnyBidirectionalCursor<Element, Failure: CursorErrorType>:
         loadPreviousPageClosure(completion)
     }
 
-    public init<Cursor: BidirectionalCursorType>(bidirectionalCursor: Cursor) where Cursor.Element == Element, Cursor.Failure == Failure {
+    public init<Cursor: BidirectionalCursorType>(bidirectionalCursor: Cursor) where Cursor.Page == Page, Cursor.Failure == Failure {
         self.loadPreviousPageClosure = bidirectionalCursor.loadPreviousPage
         super.init(cursor: bidirectionalCursor)
     }
@@ -16,7 +16,7 @@ open class AnyBidirectionalCursor<Element, Failure: CursorErrorType>:
 // MARK: - Operators
 
 public extension BidirectionalCursorType {
-    func eraseToAnyCursor() -> AnyBidirectionalCursor<Element, Failure> {
+    func eraseToAnyCursor() -> AnyBidirectionalCursor<Page, Failure> {
         return AnyBidirectionalCursor(bidirectionalCursor: self)
     }
 }

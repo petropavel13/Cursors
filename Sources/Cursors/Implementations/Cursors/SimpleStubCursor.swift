@@ -1,8 +1,8 @@
-public final class SimpleStubCursor<Element>: CursorType {
-    public typealias Element = Element
+public final class SimpleStubCursor<Page: PageType>: CursorType {
+    public typealias Page = Page
     public typealias Failure = ExhaustedCursorError
 
-    private let pages: [[Element]]
+    private let pages: [Page]
 
     private var currentPageIndex: Int
 
@@ -10,16 +10,16 @@ public final class SimpleStubCursor<Element>: CursorType {
         return currentPageIndex == pages.count
     }
 
-    private init(pages: [[Element]], currentPageIndex: Int) {
+    private init(pages: [Page], currentPageIndex: Int) {
         self.pages = pages
         self.currentPageIndex = currentPageIndex
     }
 
-    public convenience init(pages: [[Element]]) {
+    public convenience init(pages: [Page]) {
         self.init(pages: pages, currentPageIndex: pages.startIndex)
     }
 
-    public convenience init(singlePage: [Element]) {
+    public convenience init(singlePage: Page) {
         self.init(pages: [singlePage])
     }
 
@@ -34,20 +34,20 @@ public final class SimpleStubCursor<Element>: CursorType {
         let newItems = pages[currentPageIndex]
 
         currentPageIndex += 1
-        completion(.success((elements: newItems, exhausted: exhausted)))
+        completion(.success((page: newItems, exhausted: exhausted)))
     }
 }
 
 // MARK: - Conformances
 
 extension SimpleStubCursor: ResettableType {
-    public convenience init(withInitialStateFrom other: SimpleStubCursor<Element>) {
+    public convenience init(withInitialStateFrom other: SimpleStubCursor<Page>) {
         self.init(pages: other.pages)
     }
 }
 
 extension SimpleStubCursor: CloneableType {
-    public convenience init(keepingStateOf other: SimpleStubCursor<Element>) {
+    public convenience init(keepingStateOf other: SimpleStubCursor<Page>) {
         self.init(pages: other.pages, currentPageIndex: other.currentPageIndex)
     }
 }

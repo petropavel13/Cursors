@@ -1,15 +1,20 @@
-public final class CompactMapCursor<Cursor: CursorType, Element>: CursorType {
-    public typealias Element = Element
+public final class CompactMapCursor<Cursor: CursorType, Page: PageType>: CursorType {
+    public typealias Page = Page
     public typealias Failure = Cursor.Failure
 
     private let cursor: Cursor
     private let transformClosure: TransformClosure
+    private let createPageClosure: CreatePageClosure
 
-    public typealias TransformClosure = (Cursor.Element) -> Element?
+    public typealias TransformClosure = (Cursor.Page.Item) -> Page.Item?
+    public typealias CreatePageClosure = (Cursor.Page, [Page.Item]) -> Page
 
-    public init(cursor: Cursor, transformClosure: @escaping TransformClosure) {
+    public init(cursor: Cursor,
+                transformClosure: @escaping TransformClosure,
+                createPageClosure: @escaping CreatePageClosure) {
         self.cursor = cursor
         self.transformClosure = transformClosure
+        self.createPageClosure = createPageClosure
     }
 
     // MARK: - CursorType
@@ -24,9 +29,10 @@ public final class CompactMapCursor<Cursor: CursorType, Element>: CursorType {
         nextPageClosure {
             switch $0 {
             case let .success(result):
-                let transformedNewItems = result.elements.compactMap(self.transformClosure)
+                let transformedNewItems = result.page.pageItems.compactMap(self.transformClosure)
 
-                completion(.success((elements: transformedNewItems, exhausted: result.exhausted)))
+                completion(.success((page: self.createPageClosure(result.page, transformedNewItems),
+                                     exhausted: result.exhausted)))
             case let .failure(failure):
                 completion(.failure(failure))
             }
@@ -81,14 +87,18 @@ extension CompactMapCursor: ElementStrideableType where Cursor: ElementStrideabl
 }
 
 extension CompactMapCursor: ResettableType where Cursor: ResettableType {
-    public convenience init(withInitialStateFrom other: CompactMapCursor<Cursor, Element>) {
-        self.init(cursor: other.cursor.reset(), transformClosure: other.transformClosure)
+    public convenience init(withInitialStateFrom other: CompactMapCursor<Cursor, Page>) {
+        self.init(cursor: other.cursor.reset(),
+                  transformClosure: other.transformClosure,
+                  createPageClosure: other.createPageClosure)
     }
 }
 
 extension CompactMapCursor: CloneableType where Cursor: CloneableType {
-    public convenience init(keepingStateOf other: CompactMapCursor<Cursor, Element>) {
-        self.init(cursor: other.cursor.clone(), transformClosure: other.transformClosure)
+    public convenience init(keepingStateOf other: CompactMapCursor<Cursor, Page>) {
+        self.init(cursor: other.cursor.clone(),
+                  transformClosure: other.transformClosure,
+                  createPageClosure: other.createPageClosure)
     }
 }
 
@@ -101,11 +111,25 @@ extension CompactMapCursor: CancelableType where Cursor: CancelableType {
 // MARK: - Operators
 
 public extension CursorType {
-    func compactMap<T>(transformClosure: @escaping CompactMapCursor<Self, T>.TransformClosure) -> CompactMapCursor<Self, T> {
-        return CompactMapCursor(cursor: self, transformClosure: transformClosure)
+    func compactMap<T>(transformClosure: @escaping CompactMapCursor<Self, T>.TransformClosure,
+                       createPageClosure: @escaping CompactMapCursor<Self, T>.CreatePageClosure) -> CompactMapCursor<Self, T> {
+
+        return CompactMapCursor(cursor: self,
+                                transformClosure: transformClosure,
+                                createPageClosure: createPageClosure)
     }
 
-    func filter(filterClosure: @escaping (Element) -> Bool) -> CompactMapCursor<Self, Element> {
-        return CompactMapCursor(cursor: self) { filterClosure($0) ? $0 : nil }
+    func compactMap<T>(transformClosure: @escaping CompactMapCursor<Self, [T]>.TransformClosure) -> CompactMapCursor<Self, [T]> {
+
+        return CompactMapCursor(cursor: self,
+                                transformClosure: transformClosure,
+                                createPageClosure: { _, newItems in newItems })
+    }
+
+    func filter(filterClosure: @escaping (Page.Item) -> Bool) -> CompactMapCursor<Self, Page> {
+
+        return CompactMapCursor(cursor: self,
+                                transformClosure: { filterClosure($0) ? $0 : nil },
+                                createPageClosure: Page.init)
     }
 }

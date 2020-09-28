@@ -1,8 +1,8 @@
 public protocol CursorType {
-    associatedtype Element
+    associatedtype Page: PageType
     associatedtype Failure: CursorErrorType
 
-    typealias SuccessResult = (elements: [Element], exhausted: Bool)
+    typealias SuccessResult = (page: Page, exhausted: Bool)
     typealias LoadResult = Result<SuccessResult, Failure>
     typealias ResultCompletion = (LoadResult) -> Void
 

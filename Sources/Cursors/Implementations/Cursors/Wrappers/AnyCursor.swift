@@ -1,10 +1,10 @@
-open class AnyCursor<Element, Failure: CursorErrorType>: CursorType {
-    public typealias Element = Element
+open class AnyCursor<Page: PageType, Failure: CursorErrorType>: CursorType {
+    public typealias Page = Page
     public typealias Failure = Failure
 
     private let loadNextPageClosure: (@escaping ResultCompletion) -> Void
 
-    public init<Cursor: CursorType>(cursor: Cursor) where Cursor.Element == Element, Cursor.Failure == Failure {
+    public init<Cursor: CursorType>(cursor: Cursor) where Cursor.Page == Page, Cursor.Failure == Failure {
         self.loadNextPageClosure = cursor.loadNextPage
     }
 
@@ -18,7 +18,7 @@ open class AnyCursor<Element, Failure: CursorErrorType>: CursorType {
 // MARK: - Operators
 
 public extension CursorType {
-    func eraseToAnyCursor() -> AnyCursor<Element, Failure> {
+    func eraseToAnyCursor() -> AnyCursor<Page, Failure> {
         return AnyCursor(cursor: self)
     }
 }

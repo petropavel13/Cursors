@@ -1,7 +1,8 @@
-public final class StubCursor<Element>: BidirectionalCursorType {
-    public typealias Pages = [[Element]]
+public final class StubCursor<Item>: BidirectionalCursorType {
+    public typealias Page = [Item]
+    public typealias Pages = [Page]
 
-    public typealias Element = Element
+    public typealias Element = Item
     public typealias Failure = ExhaustedCursorError
 
     public struct Position: PageIndexableType, ElementIndexableType, Strideable {
@@ -247,7 +248,7 @@ public final class StubCursor<Element>: BidirectionalCursorType {
             ? currentPosition.hasItemsAfter
             : currentPosition.hasItemsBefore
 
-        completion(.success((elements: Array(newItems), exhausted: !hasMoreItems)))
+        completion(.success((page: Array(newItems), exhausted: !hasMoreItems)))
     }
 }
 

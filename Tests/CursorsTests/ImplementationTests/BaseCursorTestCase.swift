@@ -1,10 +1,10 @@
 import XCTest
 import Cursors
 
-class BaseCursorTestCase<Cursor: CursorType>: XCTestCase where Cursor.Element: Equatable {
+class BaseCursorTestCase<Cursor: CursorType>: XCTestCase where Cursor.Page.Item: Equatable {
 
     typealias DrainResultType = DrainResult<Cursor>
-    typealias Pages = [[Cursor.Element]]
+    typealias Pages = [[Cursor.Page.Item]]
 
     var defaultTestPages: Pages {
         fatalError("Override \(#function) in subclass!")
@@ -90,7 +90,7 @@ extension Array where Element: Equatable {
 
 extension BaseCursorTestCase where Cursor: ElementStrideableType,
     Cursor.Position.ElementIndex.Stride == Pages.Index.Stride,
-    Cursor.Element: Equatable {
+    Cursor.Page.Item: Equatable {
 
     func baseTestPositionableTraitForwardDrain() {
         let positionableCursor = createDefaultTestCursor(pages: defaultTestPages)
@@ -140,7 +140,7 @@ extension BaseCursorTestCase where Cursor: ElementStrideableType,
 
 extension BaseCursorTestCase where Cursor: ElementStrideableType & BidirectionalCursorType,
     Cursor.Position.ElementIndex.Stride == Pages.Index.Stride,
-    Cursor.Element: Equatable {
+    Cursor.Page.Item: Equatable {
 
     func baseTestPositionableTraitBackwardDrain() {
         let drainBackwardCursor = createDefaultTestCursor(pages: defaultTestPages)

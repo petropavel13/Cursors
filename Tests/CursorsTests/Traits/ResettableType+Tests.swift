@@ -1,7 +1,7 @@
 import Cursors
 import XCTest
 
-extension ResettableType where Self: CursorType, Element: Equatable {
+extension ResettableType where Self: CursorType, Page.Item: Equatable {
     func forwardResultsAreEqualAfterReset() -> XCTestExpectation {
         let cursorType = type(of: self)
 

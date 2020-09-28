@@ -1,7 +1,7 @@
 import Cursors
 import XCTest
 
-extension CursorType where Element: Equatable {
+extension CursorType where Page.Item: Equatable {
     func drainResultEqual(to result: DrainResult<Self>,
                           drainClosure: @escaping (@escaping DrainCompletion) -> Void,
                           nextPageClosure: @escaping (@escaping ResultCompletion) -> Void) -> XCTestExpectation {

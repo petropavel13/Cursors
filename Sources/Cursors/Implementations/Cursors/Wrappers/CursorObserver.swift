@@ -1,6 +1,6 @@
 public final class CursorObserver<Cursor, EventHandler: CursorObserverEventHandler>: CursorType where EventHandler.Cursor == Cursor {
 
-    public typealias Element = Cursor.Element
+    public typealias Page = Cursor.Page
     public typealias Failure = Cursor.Failure
 
     private let cursor: Cursor
